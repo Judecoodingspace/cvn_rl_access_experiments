@@ -57,6 +57,8 @@ def config_inputs(path: Path, seen=None) -> set[str]:
             }:
                 inputs.add(value)
     visit(config)
+    if config.get('protocol_version') == 'r5c2_v2':
+        inputs.add('revision_round2/review_comments/action_plans/r5c2/r5c2_v2_protected_sources.json')
     return inputs
 
 

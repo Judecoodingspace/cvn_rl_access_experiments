@@ -13,7 +13,7 @@ python scripts/reproduce.py check --device cpu
 
 GitHub Actions 配置了 Python 3.12 的 Windows/Linux CPU 验证。CI 状态须以远端实际运行结果为准。
 
-首次托管前，已在只含 Git 候选文件的代码副本和全新 Windows Python 3.12 CPU 环境中验证：依赖安装成功，`pip check` 无冲突，145 项测试通过，三策略 smoke 的训练、独立评估及产物校验通过。该验证不代表所有正式论文实验已经复现。
+首次托管前，已在只含 Git 候选文件的代码副本和全新 Windows Python 3.12 CPU 环境中验证：依赖安装成功，`pip check` 无冲突，159 项测试通过，1 项作者工作区快照审计跳过，三策略 smoke 的训练、独立评估及产物校验通过。该验证不代表所有正式论文实验已经复现。
 
 ## 2. 选择实验
 
@@ -83,6 +83,8 @@ python scripts/r5c2_dqi_sensitivity.py verify --config configs/r5c2_local.json
 该 pipeline 保存协议哈希、划分与归一化信息、模型索引和任务索引。`--resume` 只复用兼容产物。正式协议须完成 runtime probe，不能用 `--skip-full-probe` 跳过后冻结。
 
 ## 6. 外部数据包与正式模式
+
+新增 R5-C2 v2 代码亦保留在仓库中，但 `resolve` 依赖作者工作区的 `r5c2_v2_protected_sources.json`，以及其中列出的旧模型/结果快照。它不是首次检出即可完整启动的公共入口。公开检出的测试仍执行 v2 物理、因果性和模型测试，只跳过“作者旧工作区文件未改变”这一项本地审计；正式运行器的保护检查没有关闭。
 
 artifact descriptor 配置需要按 loader schema 提供：
 

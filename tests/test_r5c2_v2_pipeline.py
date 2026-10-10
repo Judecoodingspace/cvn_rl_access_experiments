@@ -13,7 +13,10 @@ def test_window_end_anchor_and_future_intervention():
     x,_=d[0]; np.testing.assert_array_equal(x.numpy(),f[:200])
     before=x.numpy().copy(); f[200:]*=2; np.testing.assert_array_equal(d[0][0].numpy(),before)
 
-def test_physical_bundle_hash_rejects_tampering(tmp_path):
+def test_physical_bundle_hash_rejects_tampering(tmp_path, monkeypatch):
+    # The test's temporary workspace obeys the same write-scope guard as a checkout.
+    from cvn_rl.experiments.r5c2_v2 import protocol
+    monkeypatch.setattr(protocol, 'ROOT', tmp_path)
     e=read_json(ROOT/'configs/r2_r05c02_dqi_sensitivity_v2.json'); b=generate(e,6,12,10,'test')
     save_bundle(tmp_path,b); restored=load_bundle(tmp_path); assert restored.physical_hash()==b.physical_hash()
     with (tmp_path/'physical.npz').open('ab') as stream: stream.write(b'changed')

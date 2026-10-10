@@ -107,8 +107,8 @@ e5_frozen_single_vt_formal.json,multi_vehicle_external_validation,data/descripto
 e5_frozen_staleness_formal.json,multi_vehicle_evaluation_robustness,data/descriptor_bundles/frozen_default/{scenario}/{split}/seed_{seed},frozen-models,external-inputs-required
 overhead_staleness_sensitivity.json,overhead_staleness_sensitivity,,,no-declared-external-inputs
 r2_r05c02_dqi_sensitivity.json,,models/attention_lstm_bs_occupancy_h1.pt | results/d3_r1_attention_dqi_frozen/formal_train/attention_lstm_dqi.meta.json,,external-inputs-required
-r2_r05c02_dqi_sensitivity_v2.json,,models/attention_lstm_bs_occupancy_h1.pt,,external-inputs-required
-r2_r05c02_dqi_sensitivity_v2_smoke.json,,models/attention_lstm_bs_occupancy_h1.pt,,external-inputs-required
+r2_r05c02_dqi_sensitivity_v2.json,,models/attention_lstm_bs_occupancy_h1.pt | revision_round2/review_comments/action_plans/r5c2/r5c2_v2_protected_sources.json,,external-inputs-required
+r2_r05c02_dqi_sensitivity_v2_smoke.json,,models/attention_lstm_bs_occupancy_h1.pt | revision_round2/review_comments/action_plans/r5c2/r5c2_v2_protected_sources.json,,external-inputs-required
 r5c2_reproduce.json,,models/attention_lstm_bs_occupancy_h1.pt,,external-inputs-required
 repro_smoke.json,multi_vehicle_baseline_comparison,,,no-declared-external-inputs
 robustness_prediction_sensing.json,prediction_sensing_robustness,,,no-declared-external-inputs

@@ -10,6 +10,10 @@ from cvn_rl.experiments.r5c2_v2.environment import PhysicalAccessEnv,environment
 @pytest.fixture
 def entry(): return read_json(ROOT/'configs/r2_r05c02_dqi_sensitivity_v2.json')
 
+@pytest.mark.skipif(
+    not (ROOT / 'revision_round2/review_comments/action_plans/r5c2/r5c2_v2_protected_sources.json').is_file(),
+    reason='Author-workspace preservation audit requires the unpublished local snapshot',
+)
 def test_old_sources_preserved(): assert not check_protected()['changed']
 
 def test_umilos_domains_and_piecewise():
