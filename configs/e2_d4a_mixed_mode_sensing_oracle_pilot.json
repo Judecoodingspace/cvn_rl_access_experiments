@@ -1,0 +1,12 @@
+{
+  "inherits": "e2_d4a_mixed_mode_sensing_noisy_pilot.json",
+  "validation_type": "d4a_mixed_mode_sensing_oracle_pilot",
+  "traffic": {
+    "family": "periodic_with_jitter",
+    "period_slots": 50,
+    "busy_slots": 20,
+    "jitter_slots": 5,
+    "sensing_pd": 1.0,
+    "sensing_pfa": 0.0
+  }
+}

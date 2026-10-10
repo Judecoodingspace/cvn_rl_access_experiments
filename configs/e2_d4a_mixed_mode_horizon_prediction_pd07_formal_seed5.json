@@ -1,0 +1,73 @@
+{
+  "inherits": "e2_d4a_mixed_mode_horizon_with_prediction_pilot.json",
+  "validation_type": "d4a_mixed_mode_horizon_prediction_pd07_formal_seed5",
+  "slots": 20000,
+  "quick_slots": 500,
+  "seeds": [301, 302, 303, 304, 305],
+  "agents": ["ddqn_no_esn"],
+  "scenarios": [
+    {
+      "name": "mixed_pd_0p7_pfa_0p1",
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 20,
+        "jitter_slots": 5,
+        "sensing_pd": 0.7,
+        "sensing_pfa": 0.1
+      }
+    }
+  ],
+  "checkpoint_evaluation": {
+    "checkpoint_interval": 5000,
+    "eval_episodes": 2,
+    "eval_slots": 2000
+  },
+  "final_checkpoint_evaluation": {
+    "eval_episodes": 5,
+    "eval_slots": 10000
+  },
+  "d4a_mixed_mode_formal": {
+    "stage": "pd07_seed5_ddqn_no_esn_tradeoff_validation",
+    "rationale": "Validate whether Prediction+DQI forms a safety-throughput compromise under degraded sensing, rather than requiring Pareto dominance over DQI-only or prediction-only.",
+    "sensing": {
+      "sensing_pd": 0.7,
+      "sensing_pfa": 0.1
+    },
+    "action_mask_thresholds": {
+      "underlay_power_cap_min": 0.2,
+      "underlay_theta_min": null
+    },
+    "conditions": {
+      "none": "neutral_none",
+      "dqi": "dqi_only",
+      "prediction": "prediction_only",
+      "both": "prediction_plus_dqi"
+    },
+    "primary_metric": "served_goodput_mbps",
+    "safety_metric": "pu_access_violation_rate",
+    "secondary_metrics": [
+      "plr",
+      "underlay_selection_ratio",
+      "underlay_transmissions",
+      "overlay_transmissions"
+    ],
+    "planned_pairwise_comparisons": [
+      ["prediction_plus_dqi", "neutral_none"],
+      ["prediction_plus_dqi", "dqi_only"],
+      ["prediction_plus_dqi", "prediction_only"],
+      ["dqi_only", "prediction_only"]
+    ],
+    "tradeoff_gate": {
+      "prediction_plus_dqi_goodput_ge_prediction_only": true,
+      "prediction_plus_dqi_plr_le_prediction_only": true,
+      "prediction_plus_dqi_pu_violation_le_dqi_only": true,
+      "prediction_plus_dqi_goodput_margin_vs_dqi_only_min_mbps": -0.25,
+      "prediction_plus_dqi_underlay_selection_ratio_min": 0.45
+    },
+    "not_required_for_success": [
+      "prediction_plus_dqi_goodput_ge_dqi_only",
+      "prediction_plus_dqi_pu_violation_le_prediction_only"
+    ]
+  }
+}

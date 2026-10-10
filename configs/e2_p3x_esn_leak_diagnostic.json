@@ -1,0 +1,9 @@
+{
+  "inherits": "e2_p3x_esn_structure_diagnostic.json",
+  "validation_type": "diagnostic_esn_reservoir_leak",
+  "agents": ["esn_ddqn_linear_leak_0p1", "esn_ddqn_linear_leak_1p0"],
+  "agent_settings": {
+    "esn_ddqn_linear_leak_0p1": {"learning_rate": 0.003, "reservoir_size": 128, "reservoir_leak": 0.1, "reservoir_radius": 0.85},
+    "esn_ddqn_linear_leak_1p0": {"learning_rate": 0.003, "reservoir_size": 128, "reservoir_leak": 1.0, "reservoir_radius": 0.85}
+  }
+}

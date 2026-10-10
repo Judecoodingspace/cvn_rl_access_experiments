@@ -1,0 +1,29 @@
+{
+  "inherits": "e2_p0_prediction_positive_control.json",
+  "experiment": "multi_vehicle_external_validation",
+  "validation_type": "diagnostic_central_predictor_broadcast_sensitivity",
+  "diagnostic_privileged": true,
+  "payload_bits_per_channel": {"theta": 8},
+  "descriptor_variants": [
+    {
+      "name": "central_frozen_policy",
+      "module_variant": "theta_central_frozen",
+      "descriptors": {
+        "theta_condition": "central_frozen_model",
+        "dqi_condition": "neutral",
+        "frozen_model_path": "models/attention_lstm_bs_occupancy_h1.pt",
+        "prediction_input_source": "bs_true_idle_history",
+        "prediction_horizon_slots": 1,
+        "prediction_update_slots": 1,
+        "expected_model_sha256": "c0d645858adf54bdcd04b9c0956629a9b11968a60013ff7d21ec5d8381cb7732"
+      }
+    }
+  ],
+  "evaluation_variants": [
+    {"name": "prediction_update_1", "descriptors": {"prediction_update_slots": 1}, "broadcast_component_update_slots": {"theta": 1}},
+    {"name": "prediction_update_10", "descriptors": {"prediction_update_slots": 10}, "broadcast_component_update_slots": {"theta": 10}},
+    {"name": "prediction_update_50", "descriptors": {"prediction_update_slots": 50}, "broadcast_component_update_slots": {"theta": 50}},
+    {"name": "prediction_update_100", "descriptors": {"prediction_update_slots": 100}, "broadcast_component_update_slots": {"theta": 100}},
+    {"name": "prediction_update_500", "descriptors": {"prediction_update_slots": 500}, "broadcast_component_update_slots": {"theta": 500}}
+  ]
+}

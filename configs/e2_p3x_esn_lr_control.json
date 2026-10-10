@@ -1,0 +1,23 @@
+{
+  "inherits": "e2_p3x_esn_structure_diagnostic.json",
+  "validation_type": "diagnostic_esn_learning_rate_control",
+  "agents": ["esn_ddqn_linear_lr_1e3", "ddqn_mlp_lr_3e3"],
+  "agent_settings": {
+    "esn_ddqn_linear_lr_1e3": {"learning_rate": 0.001, "reservoir_size": 128, "reservoir_leak": 0.35, "reservoir_radius": 0.85},
+    "ddqn_mlp_lr_3e3": {"learning_rate": 0.003}
+  },
+  "module_conditions": [
+    {
+      "name": "theta_central_frozen",
+      "descriptors": {
+        "theta_condition": "central_frozen_model",
+        "frozen_model_path": "models/attention_lstm_bs_occupancy_h1.pt",
+        "prediction_input_source": "bs_true_idle_history",
+        "prediction_horizon_slots": 1,
+        "prediction_update_slots": 1,
+        "expected_model_sha256": "c0d645858adf54bdcd04b9c0956629a9b11968a60013ff7d21ec5d8381cb7732",
+        "dqi_condition": "neutral"
+      }
+    }
+  ]
+}

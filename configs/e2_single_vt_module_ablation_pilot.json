@@ -1,0 +1,46 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_module_ablation",
+  "slots": 30000,
+  "seeds": [1, 2, 3],
+  "agents": ["ddqn_no_esn"],
+  "module_variants": ["sensing_only", "no_dqi", "no_prediction", "full"],
+  "protection_variant": "gate_state_mask",
+  "validation_type": "synthetic_controlled",
+  "reporting_profile": "e2_pilot",
+  "checkpoint_evaluation": {
+    "checkpoint_interval": 1000,
+    "eval_episodes": 5,
+    "eval_slots": 1000
+  },
+  "claim_gate": {
+    "enabled": false,
+    "agent": "ddqn_no_esn",
+    "hard_scenario": "M3_high_pu",
+    "minimum_direction_scenarios": 3
+  },
+  "pilot_signal_gate": {
+    "enabled": true,
+    "scope": "aggregate",
+    "agent": "ddqn_no_esn",
+    "hard_scenario": "M3_high_pu",
+    "minimum_direction_scenarios": 3,
+    "minimum_hard_seed_directions": 2
+  },
+  "training_horizon_selection": {
+    "enabled": true,
+    "agent": "ddqn_no_esn",
+    "module_variant": "full",
+    "min_slots": 10000,
+    "max_slots": 30000,
+    "relative_tolerance": 0.02,
+    "plr_absolute_tolerance": 0.005,
+    "consecutive_intervals": 3
+  },
+  "scenarios": [
+    {"name": "M3_low_pu", "num_channels": 3, "num_vehicles": 1, "traffic": {"family": "fixed_markov", "p01": 0.1, "p10": 0.3, "sensing_pd": 0.9, "sensing_pfa": 0.1}},
+    {"name": "M3_high_pu", "num_channels": 3, "num_vehicles": 1, "traffic": {"family": "fixed_markov", "p01": 0.3, "p10": 0.1, "sensing_pd": 0.9, "sensing_pfa": 0.1}},
+    {"name": "M10_low_pu", "num_channels": 10, "num_vehicles": 1, "traffic": {"family": "fixed_markov", "p01": 0.1, "p10": 0.3, "sensing_pd": 0.9, "sensing_pfa": 0.1}},
+    {"name": "M10_high_pu", "num_channels": 10, "num_vehicles": 1, "traffic": {"family": "fixed_markov", "p01": 0.3, "p10": 0.1, "sensing_pd": 0.9, "sensing_pfa": 0.1}}
+  ]
+}

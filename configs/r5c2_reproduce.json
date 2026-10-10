@@ -1,0 +1,22 @@
+{
+  "inherits": "r2_r05c02_dqi_sensitivity.json",
+  "output_root": "results/r5c2_reproduce",
+  "predictor_recipe": {
+    "hidden_size": 128,
+    "num_layers": 1,
+    "attention_size": 128,
+    "dropout": 0.1,
+    "feature_names": [
+      "quality_mbps",
+      "snr_db",
+      "rss_dbm",
+      "cci",
+      "bandwidth_mhz"
+    ],
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "rank_loss_weight": 0.1,
+    "seed": 20260710,
+    "source_meta": null
+  }
+}

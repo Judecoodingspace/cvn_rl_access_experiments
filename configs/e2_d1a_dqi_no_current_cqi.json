@@ -1,0 +1,23 @@
+{
+  "inherits": "e2_d0_dqi_positive_control.json",
+  "e2_r1_gate": null,
+  "validation_type": "diagnostic_dqi_no_current_cqi",
+  "state_features": [
+    "delta",
+    "fresh_dqi",
+    "theta",
+    "current_channel",
+    "dwell_remaining",
+    "blackout_remaining",
+    "queue_occupancy",
+    "hol_age",
+    "previous_channel_load",
+    "vehicle_context",
+    "dqi_available",
+    "prediction_available"
+  ],
+  "expected_outputs": [
+    "metrics/e2_d1a_dqi_no_current_cqi_checkpoint_metrics.csv",
+    "tables/e2_d1a_dqi_no_current_cqi_summary.csv"
+  ]
+}

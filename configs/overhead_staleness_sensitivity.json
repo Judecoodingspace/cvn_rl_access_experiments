@@ -1,0 +1,18 @@
+{
+  "inherits": "base.json",
+  "experiment": "overhead_staleness_sensitivity",
+  "agents": ["proposed_esn_ddqn", "ddqn_no_esn"],
+  "broadcast_update_slots": [1, 5, 10, 20, 50],
+  "dqi_validity_slots": [5, 10, 20, 50],
+  "payload_bits_per_channel": {
+    "dqi": 8,
+    "theta": 8,
+    "power_cap": 8,
+    "occupancy_type": 2
+  },
+  "expected_outputs": [
+    "metrics/overhead_staleness_metrics.csv",
+    "tables/overhead_staleness_summary.csv",
+    "figures/staleness_tradeoff_ieee.pdf"
+  ]
+}

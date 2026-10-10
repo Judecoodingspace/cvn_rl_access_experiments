@@ -1,0 +1,22 @@
+{
+  "inherits": "base.json",
+  "experiment": "prediction_sensing_robustness",
+  "agents": ["proposed_esn_ddqn", "ddqn_no_esn", "fixed_overlay", "fixed_underlay"],
+  "prediction_error_grid": {
+    "false_alarm_rates": [0.0, 0.05, 0.1, 0.2, 0.3],
+    "miss_detection_rates": [0.0, 0.05, 0.1, 0.2, 0.3]
+  },
+  "sensing_error_grid": {
+    "pd": [0.8, 0.9, 0.98],
+    "pfa": [0.02, 0.1, 0.2]
+  },
+  "underlay_estimation_error": {
+    "path_loss_error_db": [-3, 0, 3],
+    "fading_margin": [1.0, 1.5, 2.0, 3.0]
+  },
+  "expected_outputs": [
+    "metrics/robustness_metrics.csv",
+    "tables/robustness_summary.csv",
+    "figures/prediction_error_violation_heatmap_ieee.pdf"
+  ]
+}

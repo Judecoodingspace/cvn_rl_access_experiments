@@ -1,0 +1,10 @@
+{
+  "inherits": "e1_fused_multi_vehicle_pilot.json",
+  "seeds": [1],
+  "scenarios": [
+    {"name": "controlled_scarce", "num_channels": 10, "num_vehicles": 20}
+  ],
+  "descriptors": {
+    "persist_generated_bundles": false
+  }
+}

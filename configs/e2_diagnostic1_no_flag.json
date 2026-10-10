@@ -1,0 +1,12 @@
+{
+  "inherits": "e2_prediction_sensing_redundancy_pilot_a.json",
+  "validation_type": "diagnostic_no_availability_flag",
+  "state_features": [
+    "delta", "fresh_dqi", "theta", "queue_occupancy", "hol_age",
+    "previous_channel_load", "vehicle_context", "dqi_available"
+  ],
+  "expected_outputs": [
+    "metrics/diagnostic1_checkpoint_metrics.csv",
+    "tables/diagnostic1_factorial_effects.csv"
+  ]
+}

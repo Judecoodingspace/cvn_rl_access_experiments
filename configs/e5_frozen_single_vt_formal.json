@@ -1,0 +1,28 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_external_validation",
+  "slots": 30000,
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "agents": ["ddqn_no_esn"],
+  "descriptor_variants": [
+    {"name": "full", "module_variant": "full"},
+    {"name": "no_dqi", "module_variant": "no_dqi"},
+    {"name": "no_prediction", "module_variant": "no_prediction"}
+  ],
+  "descriptors": {
+    "source": "artifact",
+    "require_frozen_models": true,
+    "bundle_path_template": "data/descriptor_bundles/frozen_default/{scenario}/{split}/seed_{seed}"
+  },
+  "protection_variant": "gate_state_mask",
+  "broadcast_component_update_slots": {
+    "dqi": 1000,
+    "theta": 1,
+    "power_cap": 10,
+    "occupancy_type": 10
+  },
+  "validation_type": "hybrid_berlin_link_synthetic_pu",
+  "scenarios": [
+    {"name": "M3_high_pu", "num_channels": 3, "num_vehicles": 1, "traffic": {"family": "fixed_markov", "p01": 0.3, "p10": 0.1, "sensing_pd": 0.9, "sensing_pfa": 0.1}}
+  ]
+}

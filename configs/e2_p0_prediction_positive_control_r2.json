@@ -1,0 +1,48 @@
+{
+  "inherits": "e2_p0_prediction_positive_control.json",
+  "e2_r1_gate": "prediction_positive_control_r2",
+  "validation_type": "diagnostic_privileged_positive_control_r2",
+  "placebo_max_abs_theta_idle_correlation": 0.05,
+  "module_conditions": [
+    {
+      "name": "theta_oracle",
+      "descriptors": {
+        "theta_condition": "oracle",
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_placebo_a",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "theta_shuffle_seed_offset": 0,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_placebo_b",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "theta_shuffle_seed_offset": 1000003,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_neutral",
+      "descriptors": {
+        "theta_condition": "neutral",
+        "dqi_condition": "neutral"
+      }
+    }
+  ],
+  "gate_conditions": {
+    "oracle": "theta_oracle",
+    "primary_placebo": "theta_placebo_a",
+    "replicate_placebo": "theta_placebo_b",
+    "neutral": "theta_neutral"
+  },
+  "expected_outputs": [
+    "metrics/e2_p0_r2_prediction_checkpoint_metrics.csv",
+    "tables/e2_p0_r2_prediction_summary.csv"
+  ]
+}

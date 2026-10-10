@@ -1,0 +1,25 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_external_validation",
+  "seeds": [1, 2, 3, 4, 5],
+  "slots": 30000,
+  "agents": ["proposed_esn_ddqn", "ddqn_no_esn", "ppo_discrete"],
+  "descriptors": {
+    "source": "artifact",
+    "require_frozen_models": true,
+    "bundle_path_template": "data/descriptor_bundles/berlin_hybrid/{scenario}/{split}/seed_{seed}"
+  },
+  "descriptor_variants": [
+    {"name": "berlin_link__synthetic_pu"}
+  ],
+  "scenarios": [
+    {"name": "berlin_hybrid_M10_N5", "num_channels": 10, "num_vehicles": 5},
+    {"name": "berlin_hybrid_M10_N20", "num_channels": 10, "num_vehicles": 20}
+  ],
+  "external_validation_notice": "Berlin supplies link-quality observations; PU occupancy and multi-VT synchronization are synthetic and must be labeled as such.",
+  "expected_outputs": [
+    "metrics/berlin_external_validation_metrics.csv",
+    "tables/berlin_external_validation_summary.csv",
+    "figures/berlin_external_validation.pdf"
+  ]
+}

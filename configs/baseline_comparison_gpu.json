@@ -1,0 +1,26 @@
+{
+  "inherits": "base.json",
+  "experiment": "rl_baseline_comparison",
+  "agents": [
+    "proposed_esn_ddqn",
+    "ddqn_no_esn",
+    "dqn",
+    "ppo_discrete",
+    "tabular_q_learning",
+    "fixed_overlay",
+    "fixed_underlay"
+  ],
+  "gpu_training": {
+    "required": true,
+    "device": "cuda",
+    "torch_cuda_wheel": "cu121",
+    "batch_size": 256,
+    "replay_buffer_size": 100000
+  },
+  "expected_outputs": [
+    "metrics/access_metrics.csv",
+    "tables/summary_by_agent.csv",
+    "figures/rl_baseline_plr_ieee.pdf",
+    "figures/rl_baseline_pu_violation_ieee.pdf"
+  ]
+}

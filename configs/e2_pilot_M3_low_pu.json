@@ -1,0 +1,7 @@
+{
+  "inherits": "e2_single_vt_module_ablation_pilot.json",
+  "pilot_shard": "M3_low_pu",
+  "scenarios": [
+    {"name": "M3_low_pu", "num_channels": 3, "num_vehicles": 1, "traffic": {"family": "fixed_markov", "p01": 0.1, "p10": 0.3, "sensing_pd": 0.9, "sensing_pfa": 0.1}}
+  ]
+}

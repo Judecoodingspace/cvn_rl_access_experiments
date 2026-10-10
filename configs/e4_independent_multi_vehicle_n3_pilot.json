@@ -1,0 +1,28 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_baseline_comparison",
+  "slots": 30000,
+  "seeds": [1, 2, 3, 4, 5],
+  "agents": ["independent_ddqn", "ddqn_no_esn", "fixed_overlay", "fixed_underlay"],
+  "module_variant": "full",
+  "protection_variant": "gate_state_mask",
+  "validation_type": "synthetic_controlled",
+  "packet_traffic": {"arrival_probability": 0.2, "queue_capacity_packets": 10, "packet_size_bits": 32000},
+  "scenarios": [
+    {"name": "M10_N3_abundant", "num_channels": 10, "num_vehicles": 3},
+    {
+      "name": "M3_N3_scarce",
+      "num_channels": 3,
+      "num_vehicles": 3,
+      "packet_traffic": {"family": "bernoulli", "arrival_probability": 0.5, "queue_capacity_packets": 10, "packet_size_bits": 32000}
+    }
+  ],
+  "pilot_gate": {
+    "enabled": true,
+    "agents": ["independent_ddqn", "ddqn_no_esn"],
+    "module_variants": ["full"],
+    "access_ratio_range": [0.05, 0.95],
+    "scarce_contention_loss_max": 0.7,
+    "light_queue_fraction_max": 0.95
+  }
+}

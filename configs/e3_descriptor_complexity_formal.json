@@ -1,0 +1,34 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_descriptor_sensitivity",
+  "seeds": [1, 2, 3, 4, 5],
+  "slots": 30000,
+  "agents": ["proposed_esn_ddqn", "ddqn_no_esn"],
+  "descriptors": {
+    "source": "artifact",
+    "require_frozen_models": true,
+    "bundle_path_template": "data/descriptor_bundles/{descriptor_variant}/{scenario}/{split}/seed_{seed}"
+  },
+  "descriptor_variants": [
+    {"name": "ridge_dqi__markov_pred"},
+    {"name": "ridge_dqi__lstm_pred"},
+    {"name": "ridge_dqi__attention_lstm_pred"},
+    {"name": "lstm_dqi__markov_pred"},
+    {"name": "lstm_dqi__lstm_pred"},
+    {"name": "lstm_dqi__attention_lstm_pred"},
+    {"name": "transformer_dqi__markov_pred"},
+    {"name": "transformer_dqi__lstm_pred"},
+    {"name": "transformer_dqi__attention_lstm_pred"}
+  ],
+  "scenarios": [
+    {"name": "controlled_abundant", "num_channels": 10, "num_vehicles": 5},
+    {"name": "controlled_balanced", "num_channels": 10, "num_vehicles": 10},
+    {"name": "controlled_scarce", "num_channels": 10, "num_vehicles": 20}
+  ],
+  "expected_outputs": [
+    "metrics/descriptor_complexity_metrics.csv",
+    "tables/descriptor_complexity_summary.csv",
+    "figures/predictor_quality_vs_system_gain.pdf",
+    "figures/complexity_performance_pareto.pdf"
+  ]
+}

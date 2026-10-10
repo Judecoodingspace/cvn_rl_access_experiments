@@ -1,0 +1,104 @@
+{
+  "inherits": "e2_d2_r3_causal_dqi_gap.json",
+  "experiment": "multi_vehicle_module_ablation",
+  "validation_type": "d3_r2_dqi_descriptor_update_broadcast_sensitivity",
+  "module_conditions": [
+    {
+      "name": "dqi_future_oracle",
+      "dqi_condition": "future_oracle",
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "dqi_condition": "future_oracle"
+      }
+    },
+    {
+      "name": "dqi_attention_frozen_u1",
+      "dqi_condition": "attention_frozen",
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "dqi_condition": "attention_frozen",
+        "dqi_frozen_model_path": "results/d3_r1_attention_dqi_frozen/formal_train/attention_lstm_dqi.pt",
+        "expected_dqi_model_sha256": "4623d509d776427ca970e640fdfff2d894abb9e3145b717c6bf9c7b77f2c24a4",
+        "dqi_prediction_input_source": "dqi_channel_history",
+        "dqi_prediction_history_slots": 200,
+        "dqi_prediction_update_slots": 1,
+        "dqi_prediction_validity_slots": 200,
+        "dqi_apply_freshness_discount": false,
+        "dqi_model_id": "attention_lstm_quality_only_frozen_canonical_future_dqi_u1"
+      }
+    },
+    {
+      "name": "dqi_attention_frozen_u10",
+      "dqi_condition": "attention_frozen",
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "dqi_condition": "attention_frozen",
+        "dqi_frozen_model_path": "results/d3_r1_attention_dqi_frozen/formal_train/attention_lstm_dqi.pt",
+        "expected_dqi_model_sha256": "4623d509d776427ca970e640fdfff2d894abb9e3145b717c6bf9c7b77f2c24a4",
+        "dqi_prediction_input_source": "dqi_channel_history",
+        "dqi_prediction_history_slots": 200,
+        "dqi_prediction_update_slots": 10,
+        "dqi_prediction_validity_slots": 200,
+        "dqi_apply_freshness_discount": false,
+        "dqi_model_id": "attention_lstm_quality_only_frozen_canonical_future_dqi_u10"
+      }
+    },
+    {
+      "name": "dqi_attention_frozen_u100",
+      "dqi_condition": "attention_frozen",
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "dqi_condition": "attention_frozen",
+        "dqi_frozen_model_path": "results/d3_r1_attention_dqi_frozen/formal_train/attention_lstm_dqi.pt",
+        "expected_dqi_model_sha256": "4623d509d776427ca970e640fdfff2d894abb9e3145b717c6bf9c7b77f2c24a4",
+        "dqi_prediction_input_source": "dqi_channel_history",
+        "dqi_prediction_history_slots": 200,
+        "dqi_prediction_update_slots": 100,
+        "dqi_prediction_validity_slots": 200,
+        "dqi_apply_freshness_discount": false,
+        "dqi_model_id": "attention_lstm_quality_only_frozen_canonical_future_dqi_u100"
+      }
+    },
+    {
+      "name": "dqi_canonical_persistence",
+      "dqi_condition": "predicted",
+      "descriptors": {
+        "skip_causal_dqi": false,
+        "dqi_condition": "predicted",
+        "dqi_causal_teacher": "canonical_persistence",
+        "dqi_apply_freshness_discount": false,
+        "dqi_update_slots": 10,
+        "dqi_history_slots": 60000,
+        "dqi_model_id": "canonical_future_dqi_persistence_teacher"
+      }
+    },
+    {
+      "name": "dqi_neutral",
+      "dqi_condition": "neutral",
+      "dqi_neutral_value": 0.5,
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "dqi_condition": "neutral",
+        "dqi_neutral_value": 0.5
+      }
+    },
+    {
+      "name": "dqi_channel_placebo",
+      "dqi_condition": "channel_placebo",
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "dqi_condition": "channel_placebo",
+        "placebo_block_slots": 100
+      }
+    }
+  ],
+  "gate_conditions": {
+    "oracle": "dqi_future_oracle",
+    "attention_frozen_u1": "dqi_attention_frozen_u1",
+    "attention_frozen_u10": "dqi_attention_frozen_u10",
+    "attention_frozen_u100": "dqi_attention_frozen_u100",
+    "persistence": "dqi_canonical_persistence",
+    "channel_placebo": "dqi_channel_placebo",
+    "neutral": "dqi_neutral"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_module_ablation",
+  "slots": 30000,
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "agents": ["independent_ddqn"],
+  "module_variants": ["sensing_only", "no_dqi", "no_prediction", "full"],
+  "protection_variant": "gate_state_mask",
+  "validation_type": "synthetic_controlled",
+  "claim_gate": {
+    "enabled": true,
+    "agent": "independent_ddqn",
+    "minimum_direction_scenarios": 2
+  },
+  "requires_pilot_gate": true,
+  "packet_traffic": {"arrival_probability": 0.2, "queue_capacity_packets": 10, "packet_size_bits": 32000},
+  "scenarios": [
+    {"name": "M10_N5", "num_channels": 10, "num_vehicles": 5},
+    {"name": "M10_N10", "num_channels": 10, "num_vehicles": 10},
+    {"name": "M10_N20", "num_channels": 10, "num_vehicles": 20}
+  ]
+}

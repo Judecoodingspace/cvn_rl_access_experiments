@@ -1,0 +1,10 @@
+{
+  "inherits": "e2_d4a_mixed_mode_pilot.json",
+  "validation_type": "d4a_mixed_mode_pilot_cap03",
+  "action_mask_thresholds": {
+    "sensing_idle_min": 0.5,
+    "overlay_theta_min": null,
+    "underlay_power_cap_min": 0.3,
+    "underlay_theta_min": null
+  }
+}

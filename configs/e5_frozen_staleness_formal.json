@@ -1,0 +1,13 @@
+{
+  "inherits": "e5_frozen_single_vt_formal.json",
+  "experiment": "multi_vehicle_evaluation_robustness",
+  "module_variant": "full",
+  "descriptor_variant": "frozen_default",
+  "evaluation_variants": [
+    {"name": "dqi_update_250ms", "descriptors": {"resample_dqi_update_slots": 250}, "broadcast_component_update_slots": {"dqi": 250}, "metadata": {"dqi_update_slots": 250}},
+    {"name": "dqi_update_500ms", "descriptors": {"resample_dqi_update_slots": 500}, "broadcast_component_update_slots": {"dqi": 500}, "metadata": {"dqi_update_slots": 500}},
+    {"name": "dqi_update_1000ms", "descriptors": {"resample_dqi_update_slots": 1000}, "broadcast_component_update_slots": {"dqi": 1000}, "metadata": {"dqi_update_slots": 1000}},
+    {"name": "dqi_update_2000ms", "descriptors": {"resample_dqi_update_slots": 2000}, "broadcast_component_update_slots": {"dqi": 2000}, "metadata": {"dqi_update_slots": 2000}},
+    {"name": "dqi_update_5000ms", "descriptors": {"resample_dqi_update_slots": 5000}, "broadcast_component_update_slots": {"dqi": 5000}, "metadata": {"dqi_update_slots": 5000}}
+  ]
+}

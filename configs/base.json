@@ -1,0 +1,97 @@
+{
+  "project": "cvn_rl_access_experiments",
+  "seeds": [1, 2, 3, 4, 5],
+  "slots": 5000,
+  "quick_slots": 500,
+  "slot_duration_ms": 1,
+  "num_channels": 10,
+  "num_vehicles": 20,
+  "train_ratio": 0.7,
+  "val_ratio": 0.1,
+  "test_ratio": 0.2,
+  "state": {
+    "base_blocks": ["delta", "fresh_dqi", "theta"],
+    "reviewer_blocks": ["occupancy_type", "power_cap", "dqi_age"],
+    "freshness_neutral_value": 0.5
+  },
+  "dqi": {
+    "label": "low_quantile_future_latency_constrained_goodput",
+    "horizon_seconds": 10,
+    "quantile_alpha": 0.1,
+    "r_ref_mbps": 80,
+    "history_window": 20,
+    "core_features": ["snr", "rss", "bandwidth", "cci"],
+    "losses": ["mse", "listnet"],
+    "encoder_candidates": ["weighted_regressor", "mlp", "transformer_encoder"],
+    "validity": {
+      "t_min_slots": 5,
+      "t_max_slots": 20,
+      "discount": "exp(-age / T_val)"
+    }
+  },
+  "prediction": {
+    "target": "next_slot_idle_probability",
+    "label_projection": "eta_t_j = 1(Y_t_j == PU)",
+    "history_windows": [20, 50, 100],
+    "main_history_window": 50,
+    "model": "attention_lstm",
+    "lstm_hidden_size": 64,
+    "attention_size": 64,
+    "dropout": 0.1,
+    "optimizer": "adam",
+    "learning_rate": 0.001,
+    "batch_size": 128,
+    "loss": "binary_cross_entropy"
+  },
+  "action": {
+    "type": "discrete_channel_mode",
+    "channel_choices": "0=no_access, 1..M=channel_index",
+    "mode_choices": ["overlay", "underlay"],
+    "power_is_rl_action": false
+  },
+  "reward": {
+    "throughput_normalizer": "C_max",
+    "overlay_quality_exponent_gamma": 2.0,
+    "underlay_gate": "sigmoid(alpha * interference_margin)",
+    "underlay_gate_alpha": 5.0,
+    "violation_penalty_kappa": 1.0,
+    "collision_penalty": 1.0,
+    "clip_reward": [-1.0, 1.0]
+  },
+  "underlay_power": {
+    "policy": "bs_closed_form_cap",
+    "p_max_mw": 1.0,
+    "fading_margin": 2.0,
+    "broadcast_update_slots": 10,
+    "formula": "P=min(P_max, Psi/(g_hat * fading_margin))"
+  },
+  "traffic": {
+    "family": "fixed_markov",
+    "p01": 0.2,
+    "p10": 0.25,
+    "sensing_pd": 0.9,
+    "sensing_pfa": 0.1
+  },
+  "mobility": {
+    "speed_kmh": [40, 80, 120],
+    "trajectory": "straight_highway_with_random_initial_positions"
+  },
+  "channel": {
+    "path_loss_model": "distance_dependent_large_scale",
+    "shadowing": "log_normal",
+    "small_scale_fading": "rician",
+    "snr_db_range": [-5, 30],
+    "bandwidth_mhz": [5, 10, 20]
+  },
+  "metrics": [
+    "plr",
+    "vt_throughput",
+    "pu_throughput",
+    "pu_interference_violation_rate",
+    "average_selected_dqi",
+    "underlay_selection_ratio",
+    "convergence_slots",
+    "mean_reward",
+    "broadcast_overhead_kbps"
+  ]
+}

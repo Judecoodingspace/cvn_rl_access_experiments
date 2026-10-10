@@ -1,0 +1,53 @@
+{
+  "inherits": "e2_d2_causal_dqi_gap.json",
+  "experiment": "multi_vehicle_module_ablation",
+  "validation_type": "d2_r3_canonical_causal_dqi_teacher",
+  "module_conditions": [
+    {
+      "name": "dqi_future_oracle",
+      "dqi_condition": "future_oracle",
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "dqi_condition": "future_oracle"
+      }
+    },
+    {
+      "name": "dqi_predicted_causal",
+      "dqi_condition": "predicted",
+      "descriptors": {
+        "skip_causal_dqi": false,
+        "dqi_condition": "predicted",
+        "dqi_causal_teacher": "canonical_persistence",
+        "dqi_apply_freshness_discount": false,
+        "dqi_update_slots": 10,
+        "dqi_history_slots": 60000,
+        "dqi_model_id": "canonical_future_dqi_persistence_teacher"
+      }
+    },
+    {
+      "name": "dqi_channel_placebo",
+      "dqi_condition": "channel_placebo",
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "dqi_condition": "channel_placebo",
+        "placebo_block_slots": 100
+      }
+    },
+    {
+      "name": "dqi_neutral",
+      "dqi_condition": "neutral",
+      "dqi_neutral_value": 0.5,
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "dqi_condition": "neutral",
+        "dqi_neutral_value": 0.5
+      }
+    }
+  ],
+  "gate_conditions": {
+    "oracle": "dqi_future_oracle",
+    "causal": "dqi_predicted_causal",
+    "channel_placebo": "dqi_channel_placebo",
+    "neutral": "dqi_neutral"
+  }
+}

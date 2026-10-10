@@ -1,0 +1,121 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "e2_r1_oracle_gate",
+  "e2_r1_gate": "prediction",
+  "diagnostic_privileged": true,
+  "validation_type": "diagnostic_privileged_oracle_gate",
+  "slots": 50000,
+  "quick_slots": 500,
+  "seeds": [1, 2, 3],
+  "agents": ["ddqn_no_esn"],
+  "arrival_probabilities": [0.20],
+  "protection_variant": "gate_state_mask",
+  "mask_policy_version": "e2_r1_descriptor_independent_v1",
+  "underlay_rate_model": "power_aware_v1",
+  "state_features": [
+    "delta",
+    "fresh_dqi",
+    "theta",
+    "queue_occupancy",
+    "hol_age",
+    "previous_channel_load",
+    "vehicle_context",
+    "dqi_available",
+    "prediction_available"
+  ],
+  "action_mask_thresholds": {
+    "sensing_idle_min": 0.5,
+    "overlay_theta_min": null,
+    "underlay_power_cap_min": 0.0,
+    "underlay_theta_min": null
+  },
+  "underlay_power": {
+    "p_max_mw": 1.0,
+    "fading_margin": 2.0,
+    "service_power_ceiling_fraction": 0.2,
+    "pu_to_su_interference_ratio": 1.0
+  },
+  "channel": {
+    "snr_db_range": [-5, 30],
+    "bandwidth_mhz": [10]
+  },
+  "descriptors": {
+    "diagnostic_privileged": true,
+    "dqi_condition": "neutral",
+    "dqi_neutral_value": 0.5,
+    "prediction_noise_std": 0.0
+  },
+  "module_conditions": [
+    {
+      "name": "theta_oracle",
+      "descriptors": {
+        "theta_condition": "oracle",
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_time_shuffled",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_neutral",
+      "descriptors": {
+        "theta_condition": "neutral",
+        "dqi_condition": "neutral"
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "R1A_M3_periodic_jitter",
+      "num_channels": 3,
+      "num_vehicles": 1,
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 20,
+        "jitter_slots": 5,
+        "sensing_pd": 0.9,
+        "sensing_pfa": 0.1
+      }
+    }
+  ],
+  "power_calibration": {
+    "seed": 9000,
+    "slots": 5000,
+    "candidates": [0.1, 0.2, 0.3],
+    "target_ratio": 3.0,
+    "accepted_ratio": [2.0, 4.0],
+    "diagnostic_fallback_fraction": 0.2
+  },
+  "load_calibration": {
+    "seed": 9001,
+    "slots": 20000,
+    "arrival_probabilities": [0.20, 0.35, 0.50, 0.65],
+    "neutral_condition": "theta_neutral",
+    "oracle_condition": "theta_oracle",
+    "diagnostic_arrival_probability": 0.20,
+    "checkpoint_evaluation": {
+      "checkpoint_interval": 20000,
+      "eval_episodes": 2,
+      "eval_slots": 2000
+    }
+  },
+  "checkpoint_evaluation": {
+    "checkpoint_interval": 5000,
+    "eval_episodes": 5,
+    "eval_slots": 2000
+  },
+  "gate_conditions": {
+    "oracle": "theta_oracle",
+    "shuffled": "theta_time_shuffled",
+    "neutral": "theta_neutral"
+  },
+  "expected_outputs": [
+    "metrics/e2_r1a_prediction_oracle_checkpoint_metrics.csv",
+    "tables/e2_r1a_prediction_oracle_summary.csv"
+  ]
+}

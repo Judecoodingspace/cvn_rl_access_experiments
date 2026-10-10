@@ -1,0 +1,61 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_baseline_comparison",
+  "slots": 30000,
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "agents": [
+    "proposed_esn_ddqn",
+    "ddqn_no_esn",
+    "dqn",
+    "lstm_ddqn",
+    "sac_discrete",
+    "ppo_discrete",
+    "tabular_q_learning",
+    "fixed_overlay",
+    "fixed_underlay"
+  ],
+  "module_variant": "full",
+  "protection_variant": "gate_state_mask",
+  "validation_type": "synthetic_controlled",
+  "agent_settings": {
+    "lstm_ddqn": {
+      "hidden_size": 128,
+      "sequence_length": 32,
+      "burn_in": 8,
+      "learning_rate": 0.001,
+      "warmup": 512
+    },
+    "sac_discrete": {
+      "hidden_dim": 128,
+      "learning_rate": 0.0003,
+      "tau": 0.005,
+      "initial_alpha": 0.2,
+      "target_entropy_scale": 0.98,
+      "update_every": 4,
+      "warmup": 512
+    }
+  },
+  "checkpoint_evaluation": {
+    "checkpoint_interval": 5000,
+    "eval_episodes": 2,
+    "eval_slots": 1000
+  },
+  "final_checkpoint_evaluation": {
+    "eval_episodes": 5,
+    "eval_slots": 5000
+  },
+  "scenarios": [
+    {
+      "name": "single_scarce_high_pu",
+      "num_channels": 3,
+      "num_vehicles": 1,
+      "traffic": {"family": "fixed_markov", "p01": 0.3, "p10": 0.1, "sensing_pd": 0.9, "sensing_pfa": 0.1}
+    },
+    {
+      "name": "single_abundant_low_pu",
+      "num_channels": 10,
+      "num_vehicles": 1,
+      "traffic": {"family": "fixed_markov", "p01": 0.1, "p10": 0.3, "sensing_pd": 0.9, "sensing_pfa": 0.1}
+    }
+  ]
+}

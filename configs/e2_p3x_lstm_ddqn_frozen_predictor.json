@@ -1,0 +1,14 @@
+{
+  "inherits": "e2_p3_frozen_predictor.json",
+  "agents": ["lstm_ddqn"],
+  "validation_type": "diagnostic_central_predictor_cross_controller_lstm_ddqn",
+  "agent_settings": {
+    "lstm_ddqn": {
+      "hidden_size": 128,
+      "sequence_length": 32,
+      "burn_in": 8,
+      "learning_rate": 0.001,
+      "warmup": 512
+    }
+  }
+}

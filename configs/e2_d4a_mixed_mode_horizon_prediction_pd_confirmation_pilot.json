@@ -1,0 +1,42 @@
+{
+  "inherits": "e2_d4a_mixed_mode_horizon_with_prediction_pilot.json",
+  "validation_type": "d4a_mixed_mode_horizon_prediction_pd_confirmation_pilot",
+  "scenarios": [
+    {
+      "name": "mixed_pd_0p9_pfa_0p1",
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 20,
+        "jitter_slots": 5,
+        "sensing_pd": 0.9,
+        "sensing_pfa": 0.1
+      }
+    },
+    {
+      "name": "mixed_pd_0p7_pfa_0p1",
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 20,
+        "jitter_slots": 5,
+        "sensing_pd": 0.7,
+        "sensing_pfa": 0.1
+      }
+    }
+  ],
+  "d4a_mixed_mode_confirmation": {
+    "purpose": "Check whether the 20k mixed-mode Prediction+DQI pilot advantage at pd=0.9,pfa=0.1 persists, and whether a degraded pd=0.7 regime better matches earlier prediction-sensing redundancy findings.",
+    "conditions": [
+      "neutral_none",
+      "dqi_only",
+      "prediction_only",
+      "prediction_plus_dqi"
+    ],
+    "primary_comparisons": [
+      ["prediction_plus_dqi", "neutral_none"],
+      ["prediction_plus_dqi", "dqi_only"],
+      ["prediction_plus_dqi", "prediction_only"]
+    ]
+  }
+}

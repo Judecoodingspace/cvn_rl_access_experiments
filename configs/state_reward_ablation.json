@@ -1,0 +1,24 @@
+{
+  "inherits": "base.json",
+  "experiment": "state_reward_ablation",
+  "agents": ["proposed_esn_ddqn"],
+  "state_variants": [
+    {"name": "sensing_only", "features": ["delta"]},
+    {"name": "dqi_only", "features": ["fresh_dqi"]},
+    {"name": "prediction_only", "features": ["theta"]},
+    {"name": "sensing_dqi", "features": ["delta", "fresh_dqi"]},
+    {"name": "sensing_prediction", "features": ["delta", "theta"]},
+    {"name": "dqi_prediction", "features": ["fresh_dqi", "theta"]},
+    {"name": "full_main_tex_state", "features": ["delta", "fresh_dqi", "theta"]},
+    {"name": "full_plus_reviewer_protection", "features": ["delta", "fresh_dqi", "theta", "occupancy_type", "power_cap", "dqi_age"]}
+  ],
+  "reward_variants": [
+    {"name": "overlay_underlay_main", "layers": ["reward_gate"]},
+    {"name": "reward_gate_plus_state", "layers": ["reward_gate", "occupancy_type_state", "power_cap_state"]},
+    {"name": "three_tier_protection", "layers": ["reward_gate", "occupancy_type_state", "action_mask"]}
+  ],
+  "expected_outputs": [
+    "metrics/state_reward_ablation_metrics.csv",
+    "tables/state_reward_ablation_summary.csv"
+  ]
+}

@@ -1,0 +1,4 @@
+# Reference GPU build; requires a compatible NVIDIA driver.
+# Install this file BEFORE requirements.txt. Only Torch uses this index.
+--index-url https://download.pytorch.org/whl/cu128
+torch==2.11.0

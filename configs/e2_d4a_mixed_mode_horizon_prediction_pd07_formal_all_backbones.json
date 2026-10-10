@@ -1,0 +1,10 @@
+{
+  "inherits": "e2_d4a_mixed_mode_horizon_prediction_pd07_formal_seed5.json",
+  "validation_type": "d4a_mixed_mode_horizon_prediction_pd07_formal_all_backbones",
+  "seeds": [301, 302, 303, 304, 305, 306, 307, 308, 309, 310],
+  "agents": ["proposed_esn_ddqn", "dqn", "ddqn_no_esn"],
+  "d4a_mixed_mode_formal": {
+    "stage": "pd07_seed10_cross_backbone_tradeoff_extension",
+    "rationale": "Runtime-heavier extension to test whether the degraded-sensing safety-throughput compromise generalizes across RL backbones."
+  }
+}

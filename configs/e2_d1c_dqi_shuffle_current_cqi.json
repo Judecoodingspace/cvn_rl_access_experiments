@@ -1,0 +1,39 @@
+{
+  "inherits": "e2_d0_dqi_positive_control.json",
+  "e2_r1_gate": null,
+  "validation_type": "diagnostic_dqi_shuffle_current_cqi",
+  "module_conditions": [
+    {
+      "name": "dqi_future_oracle",
+      "descriptors": {
+        "dqi_condition": "future_oracle",
+        "theta_condition": "neutral"
+      }
+    },
+    {
+      "name": "dqi_channel_shuffled",
+      "descriptors": {
+        "dqi_condition": "channel_shuffled",
+        "theta_condition": "neutral",
+        "shuffle_current_cqi": true
+      }
+    },
+    {
+      "name": "dqi_neutral",
+      "descriptors": {
+        "dqi_condition": "neutral",
+        "theta_condition": "neutral",
+        "dqi_neutral_value": 0.5
+      }
+    }
+  ],
+  "gate_conditions": {
+    "oracle": "dqi_future_oracle",
+    "shuffled": "dqi_channel_shuffled",
+    "neutral": "dqi_neutral"
+  },
+  "expected_outputs": [
+    "metrics/e2_d1c_dqi_shuffle_current_cqi_checkpoint_metrics.csv",
+    "tables/e2_d1c_dqi_shuffle_current_cqi_summary.csv"
+  ]
+}

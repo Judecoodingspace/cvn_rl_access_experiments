@@ -1,0 +1,16 @@
+{
+  "inherits": "e2_mvp_phase_c.json",
+  "required_gate_field": "structure_passed",
+  "arrival_probabilities": [0.20, 0.35, 0.40],
+  "reuse_module_aliases": {"full": "full"},
+  "require_reuse_cases": [
+    {"scenario": "M3_high_pu", "arrival_probability": 0.20},
+    {"scenario": "M3_high_pu", "arrival_probability": 0.35},
+    {"scenario": "M10_low_pu", "arrival_probability": 0.20},
+    {"scenario": "M10_low_pu", "arrival_probability": 0.35}
+  ],
+  "expected_outputs": [
+    "metrics/e2_mvp_phase_c_fallback_0p40_checkpoint_metrics.csv",
+    "tables/e2_mvp_phase_c_fallback_0p40_summary.csv"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "inherits": "e2_d4a_mixed_mode_sensing_noisy_pilot.json",
+  "validation_type": "d4a_mixed_mode_horizon_with_prediction_pilot",
+  "slots": 20000,
+  "seeds": [301, 302],
+  "agents": ["ddqn_no_esn"],
+  "checkpoint_evaluation": {
+    "checkpoint_interval": 5000,
+    "eval_episodes": 1,
+    "eval_slots": 1000
+  },
+  "final_checkpoint_evaluation": {
+    "eval_episodes": 2,
+    "eval_slots": 2000
+  }
+}

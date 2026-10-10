@@ -1,0 +1,61 @@
+{
+  "protocol_version": "r5c2_v1",
+  "output_root": "results/revision_round2/r2_r05c02_dqi_sensitivity_v1",
+  "scenario_source": "configs/e4_independent_multi_vehicle_n10_pilot.json",
+  "scenario_name": "M10_N10_competitive",
+  "guidance_source": "configs/e2_d4a_fast_core_joint_prediction_dqi_factorial.json",
+  "agent": "proposed_esn_ddqn",
+  "rl_seeds": [1, 2, 3, 4, 5],
+  "label_num_vehicles": 15,
+  "rl_num_vehicles": 10,
+  "num_channels": 10,
+  "slot_duration_ms": 1.0,
+  "dqi_sampling_ms": 1.0,
+  "history_slots": 200,
+  "max_horizon_slots": 200,
+  "input_vehicle_quantile": 0.10,
+  "reference_quantile": 0.95,
+  "label_data": {
+    "slots": 50000,
+    "split_seeds": {
+      "train": [1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,1016,1017,1018,1019,1020],
+      "val": [2001,2002,2003,2004,2005],
+      "test": [3001,3002,3003,3004,3005]
+    }
+  },
+  "freshness": {
+    "enabled": true,
+    "t_min_ms": 100.0,
+    "t_max_ms": 1000.0,
+    "score_source": "causal_trace_cci",
+    "score_lag_slots": 1,
+    "validity_timing": "per_decision",
+    "update_candidates_slots": [50,100,500],
+    "expanded_candidates_slots": [1000,2000],
+    "selected_update_slots": null,
+    "age_feature_scale_ms": 1000.0
+  },
+  "predictor_recipe": {
+    "source_meta": "results/d3_r1_attention_dqi_frozen/formal_train/attention_lstm_dqi.meta.json",
+    "rank_loss_weight": 0.1,
+    "epochs": 40,
+    "patience": 8,
+    "weight_decay": 0.00001,
+    "sample_stride": 10
+  },
+  "rl_budget": {
+    "train_slots": 30000,
+    "checkpoint_interval": 30000,
+    "final_eval_episodes": 5,
+    "final_scored_slots": 5000
+  },
+  "pilot": {
+    "predictor_slots": 4000,
+    "predictor_epochs": 2,
+    "predictor_train_seed_count": 2,
+    "rl_train_slots": 1000,
+    "eval_episodes": 1,
+    "scored_slots": 500,
+    "age_slots": 10000
+  }
+}

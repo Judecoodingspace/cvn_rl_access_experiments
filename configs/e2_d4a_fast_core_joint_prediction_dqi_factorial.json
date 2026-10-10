@@ -1,0 +1,143 @@
+{
+    "inherits":  "e2_d4a_joint_prediction_dqi_factorial.json",
+    "validation_type":  "d4a_fast_core_joint_prediction_dqi_factorial",
+    "seeds":  [
+                  301,
+                  302,
+                  303,
+                  304,
+                  305
+              ],
+    "slots":  30000,
+    "checkpoint_evaluation":  {
+                                  "checkpoint_interval":  30000,
+                                  "eval_episodes":  1,
+                                  "eval_slots":  1000
+                              },
+    "final_checkpoint_evaluation":  {
+                                        "eval_episodes":  3,
+                                        "eval_slots":  10000
+                                    },
+    "module_conditions":  [
+                              {
+                                  "name":  "neutral_none",
+                                  "descriptors":  {
+                                                      "skip_causal_dqi":  true,
+                                                      "theta_condition":  "neutral",
+                                                      "theta_neutral_value":  0.5,
+                                                      "dqi_condition":  "neutral",
+                                                      "dqi_neutral_value":  0.5,
+                                                      "compute_future_dqi_for_metrics":  true
+                                                  }
+                              },
+                              {
+                                  "name":  "prediction_only",
+                                  "descriptors":  {
+                                                      "skip_causal_dqi":  true,
+                                                      "theta_condition":  "central_frozen_model",
+                                                      "theta_neutral_value":  0.5,
+                                                      "frozen_model_path":  "models/attention_lstm_bs_occupancy_h1.pt",
+                                                      "prediction_input_source":  "bs_true_idle_history",
+                                                      "prediction_horizon_slots":  1,
+                                                      "prediction_update_slots":  10,
+                                                      "expected_model_sha256":  "c0d645858adf54bdcd04b9c0956629a9b11968a60013ff7d21ec5d8381cb7732",
+                                                      "dqi_condition":  "neutral",
+                                                      "dqi_neutral_value":  0.5,
+                                                      "compute_future_dqi_for_metrics":  true
+                                                  }
+                              },
+                              {
+                                  "name":  "dqi_only",
+                                  "descriptors":  {
+                                                      "skip_causal_dqi":  true,
+                                                      "theta_condition":  "neutral",
+                                                      "theta_neutral_value":  0.5,
+                                                      "dqi_condition":  "attention_frozen",
+                                                      "compute_future_dqi_for_metrics":  true,
+                                                      "dqi_frozen_model_path":  "results/d3_r1_attention_dqi_frozen/formal_train/attention_lstm_dqi.pt",
+                                                      "expected_dqi_model_sha256":  "4623d509d776427ca970e640fdfff2d894abb9e3145b717c6bf9c7b77f2c24a4",
+                                                      "dqi_prediction_input_source":  "dqi_channel_history",
+                                                      "dqi_prediction_history_slots":  200,
+                                                      "dqi_prediction_update_slots":  10,
+                                                      "dqi_prediction_validity_slots":  200,
+                                                      "dqi_apply_freshness_discount":  false,
+                                                      "dqi_model_id":  "attention_lstm_quality_only_frozen_canonical_future_dqi"
+                                                  }
+                              },
+                              {
+                                  "name":  "prediction_plus_dqi",
+                                  "descriptors":  {
+                                                      "skip_causal_dqi":  true,
+                                                      "theta_condition":  "central_frozen_model",
+                                                      "theta_neutral_value":  0.5,
+                                                      "frozen_model_path":  "models/attention_lstm_bs_occupancy_h1.pt",
+                                                      "prediction_input_source":  "bs_true_idle_history",
+                                                      "prediction_horizon_slots":  1,
+                                                      "prediction_update_slots":  10,
+                                                      "expected_model_sha256":  "c0d645858adf54bdcd04b9c0956629a9b11968a60013ff7d21ec5d8381cb7732",
+                                                      "dqi_condition":  "attention_frozen",
+                                                      "compute_future_dqi_for_metrics":  true,
+                                                      "dqi_frozen_model_path":  "results/d3_r1_attention_dqi_frozen/formal_train/attention_lstm_dqi.pt",
+                                                      "expected_dqi_model_sha256":  "4623d509d776427ca970e640fdfff2d894abb9e3145b717c6bf9c7b77f2c24a4",
+                                                      "dqi_prediction_input_source":  "dqi_channel_history",
+                                                      "dqi_prediction_history_slots":  200,
+                                                      "dqi_prediction_update_slots":  10,
+                                                      "dqi_prediction_validity_slots":  200,
+                                                      "dqi_apply_freshness_discount":  false,
+                                                      "dqi_model_id":  "attention_lstm_quality_only_frozen_canonical_future_dqi"
+                                                  }
+                              }
+                          ],
+    "gate_conditions":  {
+                            "none":  "neutral_none",
+                            "prediction":  "prediction_only",
+                            "dqi":  "dqi_only",
+                            "both":  "prediction_plus_dqi"
+                        },
+    "d4a_factorial":  {
+                          "fast_core":  true,
+                          "primary_metric":  "served_goodput_mbps",
+                          "conditions":  {
+                                             "none":  "neutral_none",
+                                             "prediction":  "prediction_only",
+                                             "dqi":  "dqi_only",
+                                             "both":  "prediction_plus_dqi"
+                                         },
+                          "planned_pairwise_comparisons":  [
+                                                               [
+                                                                   "prediction_only",
+                                                                   "neutral_none"
+                                                               ],
+                                                               [
+                                                                   "dqi_only",
+                                                                   "neutral_none"
+                                                               ],
+                                                               [
+                                                                   "prediction_plus_dqi",
+                                                                   "prediction_only"
+                                                               ],
+                                                               [
+                                                                   "prediction_plus_dqi",
+                                                                   "dqi_only"
+                                                               ],
+                                                               [
+                                                                   "prediction_plus_dqi",
+                                                                   "neutral_none"
+                                                               ]
+                                                           ]
+                      },
+    "state_features":  [
+                           "fresh_dqi",
+                           "theta",
+                           "current_cqi",
+                           "current_channel",
+                           "dwell_remaining",
+                           "blackout_remaining",
+                           "queue_occupancy",
+                           "hol_age",
+                           "previous_channel_load",
+                           "vehicle_context",
+                           "dqi_available",
+                           "prediction_available"
+                       ]
+}

@@ -1,0 +1,13 @@
+{
+  "inherits": "e2_d1a_oracle_dqi_pilot.json",
+  "experiment": "multi_vehicle_module_ablation",
+  "num_vehicles": 3,
+  "seeds": [301, 302, 303, 304, 305],
+  "slots": 50000,
+  "quick_slots": 500,
+  "module_conditions": [
+    {"name": "dqi_future_oracle", "dqi_condition": "future_oracle", "descriptors": {"dqi_condition": "future_oracle"}},
+    {"name": "dqi_neutral", "dqi_condition": "neutral", "dqi_neutral_value": 0.5, "descriptors": {"dqi_condition": "neutral", "dqi_neutral_value": 0.5}},
+    {"name": "dqi_channel_placebo", "dqi_condition": "channel_placebo", "descriptors": {"dqi_condition": "channel_placebo", "placebo_block_slots": 100}}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "inherits":"r2_r05c02_dqi_sensitivity_v2.json",
+  "execution_scope":"smoke",
+  "output_root":"tmp/r5c2_physical_pipeline_v2_smoke_final",
+  "rl_seeds":[1],
+  "label_data":{"slots":1000,"split_seeds":{"train":[1001,1002],"val":[2001],"test":[3001]}},
+  "predictor_recipe":{"hidden_size":16,"attention_size":16,"dropout":0.0,"epochs":1,"batch_size":64},
+  "rl_budget":{"train_slots":300,"eval_episodes":1,"scored_slots":100},
+  "pilot":{"label_slots":1000,"epochs":1,"train_seed_count":1,"rl_train_slots":100,"eval_episodes":1,"scored_slots":100,"age_slots":10000}
+}

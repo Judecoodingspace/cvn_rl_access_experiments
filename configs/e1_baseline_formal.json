@@ -1,0 +1,18 @@
+﻿{
+  "inherits": "baseline_comparison_gpu.json",
+  "experiment": "rl_baseline_comparison",
+  "seeds": [1, 2, 3, 4, 5],
+  "scenarios": [
+    {"name": "small_scarce", "num_channels": 3, "num_vehicles": 5},
+    {"name": "small_abundant", "num_channels": 5, "num_vehicles": 3},
+    {"name": "medium_scarce", "num_channels": 10, "num_vehicles": 20},
+    {"name": "medium_abundant", "num_channels": 20, "num_vehicles": 10}
+  ],
+  "expected_outputs": [
+    "metrics/e1_baseline_formal_metrics.csv",
+    "tables/e1_baseline_formal_summary.csv",
+    "figures/e1_baseline_plr_ieee.pdf",
+    "figures/e1_baseline_pu_violation_ieee.pdf",
+    "figures/e1_baseline_convergence_ieee.pdf"
+  ]
+}

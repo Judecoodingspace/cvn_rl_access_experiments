@@ -1,0 +1,29 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_scale_traffic",
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "agents": [
+    "proposed_esn_ddqn",
+    "ddqn_no_esn",
+    "dqn",
+    "ppo_discrete",
+    "fixed_overlay",
+    "fixed_underlay"
+  ],
+  "scenarios": [
+    {"name": "scale_small_rho2", "num_channels": 5, "num_vehicles": 10},
+    {"name": "scale_medium_rho2", "num_channels": 10, "num_vehicles": 20},
+    {"name": "scale_large_rho2", "num_channels": 20, "num_vehicles": 40},
+    {"name": "reviewer_large_dense", "num_channels": 20, "num_vehicles": 50}
+  ],
+  "arrival_probabilities": [0.2, 0.5, 0.8],
+  "traffic_families": [
+    {"family": "fixed_markov", "p01": 0.1, "p10": 0.3},
+    {"family": "fixed_markov", "p01": 0.3, "p10": 0.1},
+    {"family": "fixed_markov", "p01": 0.5, "p10": 0.1},
+    {"family": "time_varying_markov", "blocks": 5, "p01_range": [0.05, 0.5], "p10_range": [0.05, 0.5]},
+    {"family": "bursty_on_off", "idle_mean_slots": 20, "busy_mean_slots": 15},
+    {"family": "periodic_with_jitter", "period_slots": 50, "busy_slots": 20, "jitter_slots": 5},
+    {"family": "mixed_by_channel"}
+  ]
+}

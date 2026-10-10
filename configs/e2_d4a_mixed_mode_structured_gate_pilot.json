@@ -1,0 +1,135 @@
+{
+  "inherits": "e2_d4a_mixed_mode_pilot_cap02.json",
+  "validation_type": "d4a_mixed_mode_structured_gate_pilot",
+  "slots": 8000,
+  "seeds": [301, 302],
+  "agents": ["ddqn_no_esn"],
+  "traffic": {
+    "family": "periodic_with_jitter",
+    "period_slots": 50,
+    "busy_slots": 20,
+    "jitter_slots": 5,
+    "sensing_pd": 0.9,
+    "sensing_pfa": 0.1
+  },
+  "module_conditions": [
+    {
+      "name": "dqi_only",
+      "prediction_info_source": "neutral",
+      "prediction_mask_source": "neutral",
+      "action_mask_thresholds": {
+        "sensing_idle_min": 0.5,
+        "overlay_theta_min": null,
+        "underlay_power_cap_min": 0.2,
+        "underlay_theta_min": null
+      },
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "theta_condition": "neutral",
+        "theta_neutral_value": 0.5,
+        "dqi_condition": "attention_frozen",
+        "compute_future_dqi_for_metrics": true,
+        "dqi_frozen_model_path": "results/d3_r1_attention_dqi_frozen/formal_train/attention_lstm_dqi.pt",
+        "expected_dqi_model_sha256": "4623d509d776427ca970e640fdfff2d894abb9e3145b717c6bf9c7b77f2c24a4",
+        "dqi_prediction_input_source": "dqi_channel_history",
+        "dqi_prediction_history_slots": 200,
+        "dqi_prediction_update_slots": 10,
+        "dqi_prediction_validity_slots": 200,
+        "dqi_apply_freshness_discount": false,
+        "dqi_model_id": "attention_lstm_quality_only_frozen_canonical_future_dqi"
+      }
+    },
+    {
+      "name": "prediction_only",
+      "prediction_info_source": "real",
+      "prediction_mask_source": "real",
+      "action_mask_thresholds": {
+        "sensing_idle_min": 0.5,
+        "overlay_theta_min": null,
+        "underlay_power_cap_min": 0.2,
+        "underlay_theta_min": 0.5
+      },
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "theta_condition": "central_frozen_model",
+        "theta_neutral_value": 0.5,
+        "frozen_model_path": "models/attention_lstm_bs_occupancy_h1.pt",
+        "prediction_input_source": "bs_true_idle_history",
+        "prediction_horizon_slots": 1,
+        "prediction_update_slots": 10,
+        "expected_model_sha256": "c0d645858adf54bdcd04b9c0956629a9b11968a60013ff7d21ec5d8381cb7732",
+        "dqi_condition": "neutral",
+        "dqi_neutral_value": 0.5,
+        "compute_future_dqi_for_metrics": true
+      }
+    },
+    {
+      "name": "full_state_only",
+      "prediction_info_source": "real",
+      "prediction_mask_source": "neutral",
+      "action_mask_thresholds": {
+        "sensing_idle_min": 0.5,
+        "overlay_theta_min": null,
+        "underlay_power_cap_min": 0.2,
+        "underlay_theta_min": null
+      },
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "theta_condition": "central_frozen_model",
+        "theta_neutral_value": 0.5,
+        "frozen_model_path": "models/attention_lstm_bs_occupancy_h1.pt",
+        "prediction_input_source": "bs_true_idle_history",
+        "prediction_horizon_slots": 1,
+        "prediction_update_slots": 10,
+        "expected_model_sha256": "c0d645858adf54bdcd04b9c0956629a9b11968a60013ff7d21ec5d8381cb7732",
+        "dqi_condition": "attention_frozen",
+        "compute_future_dqi_for_metrics": true,
+        "dqi_frozen_model_path": "results/d3_r1_attention_dqi_frozen/formal_train/attention_lstm_dqi.pt",
+        "expected_dqi_model_sha256": "4623d509d776427ca970e640fdfff2d894abb9e3145b717c6bf9c7b77f2c24a4",
+        "dqi_prediction_input_source": "dqi_channel_history",
+        "dqi_prediction_history_slots": 200,
+        "dqi_prediction_update_slots": 10,
+        "dqi_prediction_validity_slots": 200,
+        "dqi_apply_freshness_discount": false,
+        "dqi_model_id": "attention_lstm_quality_only_frozen_canonical_future_dqi"
+      }
+    },
+    {
+      "name": "full_structured_gate",
+      "prediction_info_source": "real",
+      "prediction_mask_source": "real",
+      "action_mask_thresholds": {
+        "sensing_idle_min": 0.5,
+        "overlay_theta_min": null,
+        "underlay_power_cap_min": 0.2,
+        "underlay_theta_min": 0.5
+      },
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "theta_condition": "central_frozen_model",
+        "theta_neutral_value": 0.5,
+        "frozen_model_path": "models/attention_lstm_bs_occupancy_h1.pt",
+        "prediction_input_source": "bs_true_idle_history",
+        "prediction_horizon_slots": 1,
+        "prediction_update_slots": 10,
+        "expected_model_sha256": "c0d645858adf54bdcd04b9c0956629a9b11968a60013ff7d21ec5d8381cb7732",
+        "dqi_condition": "attention_frozen",
+        "compute_future_dqi_for_metrics": true,
+        "dqi_frozen_model_path": "results/d3_r1_attention_dqi_frozen/formal_train/attention_lstm_dqi.pt",
+        "expected_dqi_model_sha256": "4623d509d776427ca970e640fdfff2d894abb9e3145b717c6bf9c7b77f2c24a4",
+        "dqi_prediction_input_source": "dqi_channel_history",
+        "dqi_prediction_history_slots": 200,
+        "dqi_prediction_update_slots": 10,
+        "dqi_prediction_validity_slots": 200,
+        "dqi_apply_freshness_discount": false,
+        "dqi_model_id": "attention_lstm_quality_only_frozen_canonical_future_dqi"
+      }
+    }
+  ],
+  "gate_conditions": {
+    "dqi": "dqi_only",
+    "prediction": "prediction_only",
+    "full_state_only": "full_state_only",
+    "full_structured_gate": "full_structured_gate"
+  }
+}

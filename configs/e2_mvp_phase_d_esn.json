@@ -1,0 +1,11 @@
+{
+  "inherits": "e2_mvp_phase_c.json",
+  "e2_mvp_phase": "D",
+  "agents": ["proposed_esn_ddqn"],
+  "arrival_probabilities": [0.20],
+  "require_reuse_cases": [],
+  "expected_outputs": [
+    "metrics/e2_mvp_phase_d_esn_checkpoint_metrics.csv",
+    "tables/e2_mvp_phase_d_esn_summary.csv"
+  ]
+}

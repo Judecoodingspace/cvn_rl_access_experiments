@@ -1,0 +1,49 @@
+{
+  "inherits": "e2_d4a_mixed_mode_horizon_with_prediction_cross_backbone_seed5.json",
+  "validation_type": "d4a_mixed_mode_horizon_with_prediction_full_agent_panel_seed5",
+  "agents": [
+    "proposed_esn_ddqn",
+    "dqn",
+    "ddqn_no_esn",
+    "lstm_ddqn",
+    "sac_discrete",
+    "ppo_discrete",
+    "tabular_q_learning",
+    "fixed_overlay",
+    "fixed_underlay"
+  ],
+  "agent_settings": {
+    "lstm_ddqn": {
+      "hidden_size": 128,
+      "sequence_length": 32,
+      "burn_in": 8,
+      "learning_rate": 0.001,
+      "warmup": 512
+    },
+    "sac_discrete": {
+      "hidden_dim": 128,
+      "learning_rate": 0.0003,
+      "tau": 0.005,
+      "initial_alpha": 0.2,
+      "target_entropy_scale": 0.98,
+      "update_every": 4,
+      "warmup": 512
+    }
+  },
+  "d4a_mixed_mode_formal": {
+    "stage": "pd09_seed5_full_agent_panel",
+    "rationale": "Extend the mixed-mode D4-A ablation to the broader RL/controller panel used by the prediction cross-backbone validation and include fixed overlay/underlay policy baselines for the paper table.",
+    "table_notes": {
+      "fixed_policy_baselines": "fixed_overlay and fixed_underlay do not learn descriptor-conditioned policies; report them as policy baselines, not as evidence for descriptor ablation.",
+      "primary_learned_panel": [
+        "proposed_esn_ddqn",
+        "dqn",
+        "ddqn_no_esn",
+        "lstm_ddqn",
+        "sac_discrete",
+        "ppo_discrete",
+        "tabular_q_learning"
+      ]
+    }
+  }
+}

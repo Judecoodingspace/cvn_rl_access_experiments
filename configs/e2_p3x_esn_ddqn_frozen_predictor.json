@@ -1,0 +1,5 @@
+{
+  "inherits": "e2_p3_frozen_predictor.json",
+  "agents": ["proposed_esn_ddqn"],
+  "validation_type": "diagnostic_central_predictor_cross_backbone_esn"
+}

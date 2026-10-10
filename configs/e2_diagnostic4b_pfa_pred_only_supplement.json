@@ -1,0 +1,67 @@
+{
+  "inherits": "e2_prediction_sensing_redundancy_pilot_a.json",
+  "e2_r1_gate": null,
+  "validation_type": "diagnostic_sensing_pfa_gradient_complete_supplement",
+  "module_conditions": [
+    {
+      "name": "prediction_only",
+      "sensing_info_source": "neutral",
+      "prediction_info_source": "real",
+      "sensing_mask_source": "neutral",
+      "prediction_mask_source": "neutral",
+      "descriptors": {
+        "theta_condition": "central_frozen_model",
+        "dqi_condition": "neutral",
+        "frozen_model_path": "models/attention_lstm_bs_occupancy_h1.pt",
+        "prediction_input_source": "bs_true_idle_history",
+        "prediction_horizon_slots": 1,
+        "prediction_update_slots": 10,
+        "expected_model_sha256": "c0d645858adf54bdcd04b9c0956629a9b11968a60013ff7d21ec5d8381cb7732"
+      }
+    },
+    {
+      "name": "neither",
+      "sensing_info_source": "neutral",
+      "prediction_info_source": "neutral",
+      "sensing_mask_source": "neutral",
+      "prediction_mask_source": "neutral",
+      "descriptors": {"theta_condition": "neutral", "dqi_condition": "neutral"}
+    }
+  ],
+  "gate_conditions": {
+    "prediction_only": "prediction_only",
+    "neither": "neither"
+  },
+  "scenarios": [
+    {
+      "name": "P0_M1_pfa_0p05",
+      "num_channels": 1,
+      "num_vehicles": 1,
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 20,
+        "jitter_slots": 5,
+        "sensing_pd": 0.9,
+        "sensing_pfa": 0.05
+      }
+    },
+    {
+      "name": "P0_M1_pfa_0p5",
+      "num_channels": 1,
+      "num_vehicles": 1,
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 20,
+        "jitter_slots": 5,
+        "sensing_pd": 0.9,
+        "sensing_pfa": 0.5
+      }
+    }
+  ],
+  "expected_outputs": [
+    "metrics/diagnostic4b_checkpoint_metrics.csv",
+    "tables/diagnostic4b_summary.csv"
+  ]
+}

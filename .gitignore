@@ -1,0 +1,70 @@
+# Python environments, build products and caches
+.venv*/
+venv/
+env/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.coverage*
+htmlcov/
+
+# Local editors, assistants and machine-specific settings
+.vscode/
+.idea/
+.agents/
+.claude/
+.codex/
+.workbuddy/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.local.json
+Thumbs.db
+.DS_Store
+
+# Generated traces, checkpoints and logs (regenerate through the pipeline)
+/data/
+/datasets/
+/models/
+/results/
+/logs/
+/output/
+/tmp/
+*.log
+*.pt
+*.pth
+*.ckpt
+*.npz
+*.npy
+*.parquet
+*.pkl
+*.pickle
+
+# Historical research workspace and manuscript/reviewer materials
+/archive/
+/revision_round2/
+/ascii_diagrams/
+/paper_figures/
+/paper_table/
+/emf_figures*/
+/reports/
+
+# Local-only scripts for organizing manuscripts and exporting Windows figures
+/scripts/organize_workspace.py
+/scripts/revision_pipeline.py
+/scripts/export_pdf_to_emf.ps1
+
+# Internal discussion/history; keep reusable experiment documentation below
+/docs/e2_pilot_analysis/
+/docs/revision_pipeline.md
+/docs/reviewer_response_map.md
+/docs/modeling_implications_from_main_tex.md
+/docs/EXPERIMENT_PLAN_FRAMEWORK_THESIS.md
+/docs/figure_style_prompt_template.md

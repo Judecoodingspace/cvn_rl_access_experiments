@@ -1,0 +1,20 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "validation_type": "reproducibility_smoke_surrogate_only",
+  "seeds": [1],
+  "slots": 128,
+  "quick_slots": 128,
+  "agents": ["proposed_esn_ddqn", "ddqn_no_esn", "fixed_overlay"],
+  "scenarios": [{"name": "repro_small", "num_channels": 3, "num_vehicles": 2}],
+  "descriptors": {
+    "source": "generated", "require_frozen_models": false,
+    "persist_generated_bundles": true, "dqi_history_slots": 64,
+    "dqi_update_slots": 10, "prediction_history_slots": 20
+  },
+  "checkpoint_evaluation": {"checkpoint_interval": 128, "eval_episodes": 1, "eval_slots": 64},
+  "expected_outputs": [
+    "metrics/access_metrics.csv", "tables/summary_by_agent.csv",
+    "figures/reward_checkpoint_convergence.pdf",
+    "figures/vt_throughput_checkpoint_convergence.pdf"
+  ]
+}

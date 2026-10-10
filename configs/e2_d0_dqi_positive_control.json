@@ -1,0 +1,84 @@
+{
+  "inherits": "e2_r1b_dqi_oracle_gate.json",
+  "e2_r1_gate": "dqi_positive_control",
+  "requires_e2_r1_gate": null,
+  "validation_type": "diagnostic_privileged_positive_control",
+  "diagnostic_privileged": true,
+  "slots": 100000,
+  "quick_slots": 500,
+  "hidden_lookahead_slots": 10000,
+  "seeds": [1, 2, 3],
+  "arrival_probabilities": [1.0],
+  "scenarios": [
+    {
+      "name": "D0_M5_dqi_max",
+      "num_channels": 5,
+      "num_vehicles": 1,
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 0,
+        "jitter_slots": 0
+      },
+      "channel": {
+        "quality_family": "piecewise_latent",
+        "quality_block_slots": 40000,
+        "ar_coefficient_range": [0.98, 0.995],
+        "snr_db_baseline_range": [0, 35]
+      }
+    }
+  ],
+  "module_conditions": [
+    {
+      "name": "dqi_future_oracle",
+      "descriptors": {
+        "dqi_condition": "future_oracle",
+        "theta_condition": "neutral"
+      }
+    },
+    {
+      "name": "dqi_channel_shuffled",
+      "descriptors": {
+        "dqi_condition": "channel_shuffled",
+        "theta_condition": "neutral"
+      }
+    },
+    {
+      "name": "dqi_neutral",
+      "descriptors": {
+        "dqi_condition": "neutral",
+        "theta_condition": "neutral",
+        "dqi_neutral_value": 0.5
+      }
+    }
+  ],
+  "gate_conditions": {
+    "oracle": "dqi_future_oracle",
+    "shuffled": "dqi_channel_shuffled",
+    "neutral": "dqi_neutral"
+  },
+  "packet_traffic": {
+    "arrival_probability": 1.0
+  },
+  "action": {
+    "enabled_modes": ["overlay"]
+  },
+  "power_calibration": {
+    "enabled": false
+  },
+  "load_calibration": {
+    "enabled": false
+  },
+  "descriptors": {
+    "theta_condition": "neutral",
+    "dqi_update_slots": 1000,
+    "dqi_horizon_slots": 5000,
+    "dqi_quantile": 0.10,
+    "r_ref_mbps": 80.0,
+    "compute_future_dqi_for_metrics": true
+  },
+  "expected_outputs": [
+    "metrics/e2_d0_dqi_positive_control_checkpoint_metrics.csv",
+    "tables/e2_d0_dqi_positive_control_summary.csv"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_protection_ablation",
+  "slots": 30000,
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "agents": ["ddqn_no_esn"],
+  "module_variant": "full",
+  "protection_variants": ["gate_only", "gate_plus_state", "gate_state_mask"],
+  "validation_type": "synthetic_controlled",
+  "scenarios": [
+    {"name": "M3_high_pu", "num_channels": 3, "num_vehicles": 1, "traffic": {"family": "fixed_markov", "p01": 0.3, "p10": 0.1, "sensing_pd": 0.9, "sensing_pfa": 0.1}},
+    {"name": "M10_high_pu", "num_channels": 10, "num_vehicles": 1, "traffic": {"family": "fixed_markov", "p01": 0.3, "p10": 0.1, "sensing_pd": 0.9, "sensing_pfa": 0.1}}
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "inherits": "e2_single_vt_module_ablation_pilot.json",
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "checkpoint_evaluation": {
+    "checkpoint_interval": 1000,
+    "eval_episodes": 10,
+    "eval_slots": 1000
+  },
+  "claim_gate": {
+    "enabled": true,
+    "agent": "ddqn_no_esn",
+    "hard_scenario": "M3_high_pu",
+    "minimum_direction_scenarios": 3
+  },
+  "pilot_signal_gate": {"enabled": false},
+  "reporting_profile": "formal",
+  "training_horizon_selection": {"enabled": false}
+}

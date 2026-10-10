@@ -1,0 +1,39 @@
+{
+  "inherits": "e2_d2_r3_causal_dqi_gap.json",
+  "experiment": "multi_vehicle_module_ablation",
+  "validation_type": "d3_r5_dqi_backbone_attention_frozen",
+  "num_vehicles": 1,
+  "seeds": [301, 302, 303, 304, 305, 306, 307, 308, 309, 310],
+  "slots": 50000,
+  "agents": [
+    "proposed_esn_ddqn",
+    "ddqn_no_esn",
+    "dqn",
+    "lstm_ddqn",
+    "sac_discrete",
+    "ppo_discrete",
+    "tabular_q_learning"
+  ],
+  "module_conditions": [
+    {
+      "name": "dqi_attention_frozen",
+      "dqi_condition": "attention_frozen",
+      "descriptors": {
+        "skip_causal_dqi": true,
+        "dqi_condition": "attention_frozen",
+        "compute_future_dqi_for_metrics": true,
+        "dqi_frozen_model_path": "results/d3_r1_attention_dqi_frozen/formal_train/attention_lstm_dqi.pt",
+        "expected_dqi_model_sha256": "4623d509d776427ca970e640fdfff2d894abb9e3145b717c6bf9c7b77f2c24a4",
+        "dqi_prediction_input_source": "dqi_channel_history",
+        "dqi_prediction_history_slots": 200,
+        "dqi_prediction_update_slots": 10,
+        "dqi_prediction_validity_slots": 200,
+        "dqi_apply_freshness_discount": false,
+        "dqi_model_id": "attention_lstm_quality_only_frozen_canonical_future_dqi"
+      }
+    }
+  ],
+  "gate_conditions": {
+    "attention_frozen": "dqi_attention_frozen"
+  }
+}

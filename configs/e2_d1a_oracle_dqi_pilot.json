@@ -1,0 +1,166 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_module_ablation",
+  "diagnostic_privileged": true,
+  "validation_type": "diagnostic_privileged_positive_control",
+  "slots": 50000,
+  "quick_slots": 500,
+  "slot_duration_ms": 1.0,
+  "hidden_lookahead_slots": 100,
+  "num_channels": 10,
+  "num_vehicles": 10,
+  "seeds": [301, 302, 303, 304, 305],
+  "channel": {
+    "quality_family": "smooth_semi_markov",
+    "fixed_bandwidth_mhz": 10.0,
+    "semi_markov_state_snr_db": [-6.0, 0.0, 8.0],
+    "semi_markov_bad_dwell_slots": [40, 70],
+    "semi_markov_medium_good_dwell_slots": [120, 200],
+    "semi_markov_transition_slots": 30,
+    "shadowing_ar_coefficient": 0.995,
+    "shadowing_stationary_std_db": 2.0,
+    "fast_fading_std_db": 1.0,
+    "noise_floor_dbm": -95.0
+  },
+  "switching": {
+    "blackout_slots": 5,
+    "min_dwell_slots": 50,
+    "dwell_semantics": "total_from_switch"
+  },
+  "traffic": {
+    "family": "fixed_markov",
+    "p01": 0.0,
+    "p10": 1.0,
+    "sensing_pd": 1.0,
+    "sensing_pfa": 0.0
+  },
+  "packet_traffic": {
+    "family": "bernoulli",
+    "arrival_probability": 1.0,
+    "queue_capacity_packets": 10,
+    "packet_size_bits": 32000
+  },
+  "dqi": {
+    "r_ref_mbps": 17.377581082644856,
+    "reference_source": "d0_6_train_z_q95",
+    "packet_size_bits": 32000,
+    "delay_max_ms": 5.0,
+    "delay_beta_ms": 2.0,
+    "vehicle_quantile": 0.10,
+    "time_quantile": 0.10,
+    "quantile_method": "linear",
+    "validity": {
+      "t_min_slots": 100,
+      "t_max_slots": 1000,
+      "discount": "exp(-age / T_val)"
+    }
+  },
+  "reward": {
+    "type": "physical",
+    "service_weight": 1.0,
+    "drop_weight": 1.0,
+    "contention_weight": 0.25,
+    "violation_weight": 2.0,
+    "queue_weight": 0.05,
+    "clip_reward": [-3.0, 2.0]
+  },
+  "action": {
+    "enabled_modes": ["overlay"]
+  },
+  "action_mask_thresholds": {
+    "sensing_idle_min": 0.5,
+    "overlay_theta_min": null,
+    "underlay_theta_min": null,
+    "underlay_power_cap_min": 0.2
+  },
+  "state_features": [
+    "fresh_dqi",
+    "current_cqi",
+    "current_channel",
+    "dwell_remaining",
+    "blackout_remaining",
+    "queue_occupancy",
+    "hol_age",
+    "previous_channel_load",
+    "vehicle_context"
+  ],
+  "descriptors": {
+    "source": "generated",
+    "require_frozen_models": false,
+    "persist_generated_bundles": false,
+    "skip_causal_dqi": true,
+    "theta_condition": "neutral",
+    "theta_neutral_value": 0.5,
+    "dqi_update_slots": 1,
+    "dqi_horizon_slots": 100,
+    "dqi_quantile": 0.10,
+    "quantile_method": "linear",
+    "r_ref_mbps": 17.377581082644856,
+    "packet_size_bits": 32000,
+    "dqi_delay_max_ms": 5.0,
+    "dqi_delay_beta_ms": 2.0,
+    "placebo_block_slots": 100,
+    "compute_future_dqi_for_metrics": true,
+    "prediction_history_slots": 50,
+    "prediction_noise_std": 0.03,
+    "dqi_history_slots": 100,
+    "dqi_model_id": "causal_quantile_dqi_surrogate",
+    "prediction_model_id": "causal_attention_lstm_surrogate"
+  },
+  "agents": ["ddqn_no_esn"],
+  "agent_settings": {
+    "ddqn_no_esn": {
+      "gamma": 0.9930924954370359
+    }
+  },
+  "arrival_probabilities": [1.0],
+  "checkpoint_evaluation": {
+    "checkpoint_interval": 5000,
+    "eval_episodes": 2,
+    "eval_slots": 5000
+  },
+  "final_checkpoint_evaluation": {
+    "eval_episodes": 5,
+    "eval_slots": 20000
+  },
+  "module_conditions": [
+    {
+      "name": "dqi_future_oracle",
+      "dqi_condition": "future_oracle",
+      "descriptors": {
+        "dqi_condition": "future_oracle"
+      }
+    },
+    {
+      "name": "dqi_neutral",
+      "dqi_condition": "neutral",
+      "dqi_neutral_value": 0.5,
+      "descriptors": {
+        "dqi_condition": "neutral",
+        "dqi_neutral_value": 0.5
+      }
+    },
+    {
+      "name": "dqi_channel_placebo",
+      "dqi_condition": "channel_placebo",
+      "descriptors": {
+        "dqi_condition": "channel_placebo",
+        "placebo_block_slots": 100
+      }
+    }
+  ],
+  "gate_conditions": {
+    "oracle": "dqi_future_oracle",
+    "neutral": "dqi_neutral",
+    "placebo": "dqi_channel_placebo"
+  },
+  "expected_outputs": [
+    "metrics/access_metrics.csv",
+    "metrics/checkpoint_metrics.csv",
+    "tables/checkpoint_summary.csv",
+    "tables/paired_bootstrap_comparisons.csv",
+    "tables/final_checkpoint_results.csv",
+    "tables/module_ablation_paired_bootstrap.csv",
+    "manifest.json"
+  ]
+}

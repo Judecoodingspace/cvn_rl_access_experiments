@@ -1,0 +1,136 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "e2_r1_oracle_gate",
+  "e2_r1_gate": "dqi",
+  "requires_e2_r1_gate": "prediction",
+  "diagnostic_privileged": true,
+  "validation_type": "diagnostic_privileged_oracle_gate",
+  "slots": 100000,
+  "quick_slots": 500,
+  "hidden_lookahead_slots": 10000,
+  "seeds": [1, 2, 3],
+  "agents": ["ddqn_no_esn"],
+  "arrival_probabilities": [0.20],
+  "protection_variant": "gate_state_mask",
+  "mask_policy_version": "e2_r1_descriptor_independent_v1",
+  "underlay_rate_model": "power_aware_v1",
+  "counterfactual_descriptor_disagreement": "dqi_channel_permutation",
+  "state_features": [
+    "delta",
+    "fresh_dqi",
+    "theta",
+    "current_cqi",
+    "current_channel",
+    "dwell_remaining",
+    "blackout_remaining",
+    "queue_occupancy",
+    "hol_age",
+    "previous_channel_load",
+    "vehicle_context",
+    "dqi_available",
+    "prediction_available"
+  ],
+  "action_mask_thresholds": {
+    "sensing_idle_min": 0.5,
+    "overlay_theta_min": null,
+    "underlay_power_cap_min": 0.0,
+    "underlay_theta_min": null
+  },
+  "underlay_power": {
+    "p_max_mw": 1.0,
+    "fading_margin": 2.0,
+    "service_power_ceiling_fraction": 0.2,
+    "pu_to_su_interference_ratio": 1.0
+  },
+  "switching": {
+    "blackout_slots": 10,
+    "min_dwell_slots": 1000
+  },
+  "channel": {
+    "snr_db_range": [-5, 30],
+    "bandwidth_mhz": [10],
+    "ar_coefficients": [0.80, 0.82, 0.84, 0.86, 0.88, 0.90, 0.92, 0.94, 0.96, 0.98]
+  },
+  "descriptors": {
+    "diagnostic_privileged": true,
+    "theta_condition": "neutral",
+    "dqi_update_slots": 1000,
+    "dqi_horizon_slots": 10000,
+    "dqi_quantile": 0.10,
+    "r_ref_mbps": 80.0,
+    "compute_future_dqi_for_metrics": true
+  },
+  "module_conditions": [
+    {
+      "name": "dqi_future_oracle",
+      "descriptors": {
+        "theta_condition": "neutral",
+        "dqi_condition": "future_oracle"
+      }
+    },
+    {
+      "name": "dqi_channel_shuffled",
+      "descriptors": {
+        "theta_condition": "neutral",
+        "dqi_condition": "channel_shuffled"
+      }
+    },
+    {
+      "name": "dqi_neutral",
+      "descriptors": {
+        "theta_condition": "neutral",
+        "dqi_condition": "neutral",
+        "dqi_neutral_value": 0.5
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "R1B_M10_markov_quality_stability",
+      "num_channels": 10,
+      "num_vehicles": 1,
+      "traffic": {
+        "family": "fixed_markov",
+        "p01": 0.1,
+        "p10": 0.3,
+        "sensing_pd": 0.9,
+        "sensing_pfa": 0.1
+      }
+    }
+  ],
+  "power_calibration": {
+    "seed": 9000,
+    "slots": 5000,
+    "candidates": [0.1, 0.2, 0.3],
+    "target_ratio": 3.0,
+    "accepted_ratio": [2.0, 4.0],
+    "diagnostic_fallback_fraction": 0.2
+  },
+  "load_calibration": {
+    "seed": 9002,
+    "slots": 30000,
+    "arrival_probabilities": [0.20, 0.35, 0.50, 0.65],
+    "neutral_condition": "dqi_neutral",
+    "oracle_condition": "dqi_future_oracle",
+    "diagnostic_arrival_probability": 0.20,
+    "checkpoint_evaluation": {
+      "checkpoint_interval": 30000,
+      "eval_episodes": 2,
+      "eval_slots": 10000
+    }
+  },
+  "checkpoint_evaluation": {
+    "checkpoint_interval": 10000,
+    "eval_episodes": 5,
+    "eval_slots": 10000
+  },
+  "gate_conditions": {
+    "oracle": "dqi_future_oracle",
+    "shuffled": "dqi_channel_shuffled",
+    "neutral": "dqi_neutral"
+  },
+  "expected_outputs": [
+    "metrics/e2_r1b_dqi_oracle_checkpoint_metrics.csv",
+    "tables/e2_r1b_dqi_oracle_summary.csv"
+  ]
+}

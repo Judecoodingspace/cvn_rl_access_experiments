@@ -1,0 +1,139 @@
+{
+  "inherits": "e2_p0_prediction_positive_control_r2.json",
+  "e2_r1_gate": "prediction_representation_bridge",
+  "validation_type": "diagnostic_privileged_representation_bridge",
+  "module_conditions": [
+    {
+      "name": "theta_oracle",
+      "descriptors": {
+        "theta_condition": "oracle",
+        "theta_representation": "hard",
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_placebo_a",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "theta_representation": "hard",
+        "theta_shuffle_seed_offset": 0,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_placebo_b",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "theta_representation": "hard",
+        "theta_shuffle_seed_offset": 1000003,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_soft_oracle",
+      "descriptors": {
+        "theta_condition": "oracle",
+        "theta_representation": "soft",
+        "theta_soft_epsilon": 0.1,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_soft_placebo_a",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "theta_representation": "soft",
+        "theta_soft_epsilon": 0.1,
+        "theta_shuffle_seed_offset": 0,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_soft_placebo_b",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "theta_representation": "soft",
+        "theta_soft_epsilon": 0.1,
+        "theta_shuffle_seed_offset": 1000003,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_continuous_oracle",
+      "descriptors": {
+        "theta_condition": "oracle",
+        "theta_representation": "continuous_separable",
+        "theta_value_seed_offset": 0,
+        "theta_continuous_busy_range": [0.05, 0.45],
+        "theta_continuous_idle_range": [0.55, 0.95],
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_continuous_placebo_a",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "theta_representation": "continuous_separable",
+        "theta_value_seed_offset": 0,
+        "theta_shuffle_seed_offset": 0,
+        "theta_continuous_busy_range": [0.05, 0.45],
+        "theta_continuous_idle_range": [0.55, 0.95],
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_continuous_placebo_b",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "theta_representation": "continuous_separable",
+        "theta_value_seed_offset": 0,
+        "theta_shuffle_seed_offset": 1000003,
+        "theta_continuous_busy_range": [0.05, 0.45],
+        "theta_continuous_idle_range": [0.55, 0.95],
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_neutral",
+      "descriptors": {
+        "theta_condition": "neutral",
+        "theta_representation": "hard",
+        "dqi_condition": "neutral"
+      }
+    }
+  ],
+  "gate_conditions": {
+    "representations": {
+      "hard": {
+        "oracle": "theta_oracle",
+        "primary_placebo": "theta_placebo_a",
+        "replicate_placebo": "theta_placebo_b"
+      },
+      "soft": {
+        "oracle": "theta_soft_oracle",
+        "primary_placebo": "theta_soft_placebo_a",
+        "replicate_placebo": "theta_soft_placebo_b"
+      },
+      "continuous_separable": {
+        "oracle": "theta_continuous_oracle",
+        "primary_placebo": "theta_continuous_placebo_a",
+        "replicate_placebo": "theta_continuous_placebo_b"
+      }
+    },
+    "neutral": "theta_neutral"
+  },
+  "reuse_gate_requirement": {
+    "gate": "prediction_positive_control_r2",
+    "resolved_config_hash": "55a19b96cda05bf4"
+  },
+  "require_reuse_cases": [
+    {"module_variant": "theta_oracle"},
+    {"module_variant": "theta_placebo_a"},
+    {"module_variant": "theta_placebo_b"},
+    {"module_variant": "theta_neutral"}
+  ],
+  "expected_outputs": [
+    "metrics/e2_p1r_prediction_checkpoint_metrics.csv",
+    "tables/e2_p1r_prediction_summary.csv"
+  ]
+}

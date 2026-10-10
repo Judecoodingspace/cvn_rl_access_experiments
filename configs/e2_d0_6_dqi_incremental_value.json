@@ -1,0 +1,41 @@
+{
+  "inherits": "e2_d0_5_dqi_policy_value_gate.json",
+  "experiment": "d0_6_dqi_incremental_value",
+  "d0_6_audit": {
+    "history_slots": 100,
+    "horizon_slots": 100,
+    "placebo_block_slots": 100,
+    "bootstrap_samples": 10000,
+    "calibration_seeds": {
+      "train": [101, 102, 103, 104, 105],
+      "validation": [106, 107]
+    },
+    "test_seeds": [201, 202, 203, 204, 205, 206, 207, 208, 209, 210],
+    "bad_dwell_candidates": [
+      [60, 90],
+      [50, 90],
+      [50, 80],
+      [40, 80],
+      [40, 70]
+    ],
+    "switching_conditions": {
+      "C0": {"blackout_slots": 0, "min_dwell_slots": 0},
+      "C1": {"blackout_slots": 5, "min_dwell_slots": 50},
+      "C2": {"blackout_slots": 10, "min_dwell_slots": 100}
+    },
+    "readiness": {
+      "minimum_delay_violation_fraction": 0.05,
+      "maximum_delay_violation_fraction": 0.20,
+      "minimum_distinct_top1_channels": 3,
+      "maximum_top1_channel_share": 0.80,
+      "maximum_oracle_current_top1_match": 0.90,
+      "minimum_label_std": 0.02,
+      "maximum_train_saturation": 0.15
+    },
+    "acceptance": {
+      "minimum_seed_wins": 8,
+      "minimum_practical_relative_gain": 0.02,
+      "operational_conditions": ["C1", "C2"]
+    }
+  }
+}

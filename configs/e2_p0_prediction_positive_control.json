@@ -1,0 +1,125 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "e2_r1_oracle_gate",
+  "e2_r1_gate": "prediction_positive_control",
+  "diagnostic_privileged": true,
+  "validation_type": "diagnostic_privileged_positive_control",
+  "slots": 30000,
+  "quick_slots": 500,
+  "seeds": [1, 2, 3],
+  "agents": ["ddqn_no_esn"],
+  "arrival_probabilities": [1.0],
+  "packet_traffic": {
+    "family": "bernoulli",
+    "arrival_probability": 1.0,
+    "queue_capacity_packets": 10,
+    "packet_size_bits": 32000
+  },
+  "protection_variant": "gate_state_mask",
+  "mask_policy_version": "positive_control_descriptor_independent_v1",
+  "underlay_rate_model": "power_aware_v1",
+  "action": {
+    "enabled_modes": ["overlay", "underlay"]
+  },
+  "state_features": [
+    "delta",
+    "fresh_dqi",
+    "theta",
+    "queue_occupancy",
+    "hol_age",
+    "previous_channel_load",
+    "vehicle_context",
+    "dqi_available",
+    "prediction_available"
+  ],
+  "action_mask_thresholds": {
+    "sensing_idle_min": 0.5,
+    "overlay_theta_min": null,
+    "underlay_power_cap_min": 0.0,
+    "underlay_theta_min": null
+  },
+  "underlay_power": {
+    "p_max_mw": 1.0,
+    "fading_margin": 2.0,
+    "service_power_ceiling_fraction": 0.2,
+    "pu_to_su_interference_ratio": 1.0
+  },
+  "channel": {
+    "snr_db_range": [-5, 30],
+    "bandwidth_mhz": [10]
+  },
+  "descriptors": {
+    "diagnostic_privileged": true,
+    "dqi_condition": "neutral",
+    "dqi_neutral_value": 0.5,
+    "prediction_noise_std": 0.0
+  },
+  "module_conditions": [
+    {
+      "name": "theta_oracle",
+      "descriptors": {
+        "theta_condition": "oracle",
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_time_shuffled",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_neutral",
+      "descriptors": {
+        "theta_condition": "neutral",
+        "dqi_condition": "neutral"
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "P0_M1_prediction_max",
+      "num_channels": 1,
+      "num_vehicles": 1,
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 20,
+        "jitter_slots": 5,
+        "sensing_pd": 0.8,
+        "sensing_pfa": 0.1
+      }
+    }
+  ],
+  "power_calibration": {
+    "enabled": true,
+    "seed": 9000,
+    "slots": 5000,
+    "candidates": [0.1, 0.2, 0.3],
+    "target_ratio": 3.0,
+    "accepted_ratio": [2.0, 4.0],
+    "diagnostic_fallback_fraction": 0.2
+  },
+  "load_calibration": {
+    "enabled": false
+  },
+  "checkpoint_evaluation": {
+    "checkpoint_interval": 5000,
+    "eval_episodes": 2,
+    "eval_slots": 1000
+  },
+  "final_checkpoint_evaluation": {
+    "eval_episodes": 5,
+    "eval_slots": 5000
+  },
+  "gate_conditions": {
+    "oracle": "theta_oracle",
+    "shuffled": "theta_time_shuffled",
+    "neutral": "theta_neutral"
+  },
+  "expected_outputs": [
+    "metrics/e2_p0_prediction_checkpoint_metrics.csv",
+    "tables/e2_p0_prediction_summary.csv"
+  ]
+}

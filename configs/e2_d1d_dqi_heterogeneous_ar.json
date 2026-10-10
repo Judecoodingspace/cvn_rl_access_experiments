@@ -1,0 +1,28 @@
+{
+  "inherits": "e2_d0_dqi_positive_control.json",
+  "e2_r1_gate": null,
+  "validation_type": "diagnostic_dqi_heterogeneous_ar",
+  "scenarios": [
+    {
+      "name": "D0_M5_dqi_max_hetero_ar",
+      "num_channels": 5,
+      "num_vehicles": 1,
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 0,
+        "jitter_slots": 0
+      },
+      "channel": {
+        "quality_family": "piecewise_latent",
+        "quality_block_slots": 40000,
+        "ar_coefficient_range": [0.6, 0.995],
+        "snr_db_baseline_range": [0, 35]
+      }
+    }
+  ],
+  "expected_outputs": [
+    "metrics/e2_d1d_dqi_heterogeneous_ar_checkpoint_metrics.csv",
+    "tables/e2_d1d_dqi_heterogeneous_ar_summary.csv"
+  ]
+}

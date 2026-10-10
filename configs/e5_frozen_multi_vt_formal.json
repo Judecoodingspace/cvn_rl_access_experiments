@@ -1,0 +1,9 @@
+{
+  "inherits": "e5_frozen_single_vt_formal.json",
+  "agents": ["independent_ddqn"],
+  "requires_pilot_gate": true,
+  "scenarios": [
+    {"name": "M10_N5", "num_channels": 10, "num_vehicles": 5},
+    {"name": "M10_N20", "num_channels": 10, "num_vehicles": 20}
+  ]
+}

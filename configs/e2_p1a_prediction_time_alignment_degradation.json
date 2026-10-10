@@ -1,0 +1,83 @@
+{
+  "inherits": "e2_p0_prediction_positive_control_r2.json",
+  "e2_r1_gate": "prediction_time_alignment_degradation",
+  "validation_type": "diagnostic_privileged_time_alignment_degradation",
+  "module_conditions": [
+    {
+      "name": "theta_oracle",
+      "descriptors": {
+        "theta_condition": "oracle",
+        "theta_representation": "soft",
+        "theta_soft_epsilon": 0.1,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_shuffled_p25",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "theta_representation": "soft",
+        "theta_soft_epsilon": 0.1,
+        "theta_shuffle_fraction": 0.25,
+        "theta_shuffle_seed_offset": 0,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_shuffled_p50",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "theta_representation": "soft",
+        "theta_soft_epsilon": 0.1,
+        "theta_shuffle_fraction": 0.50,
+        "theta_shuffle_seed_offset": 0,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_shuffled_p75",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "theta_representation": "soft",
+        "theta_soft_epsilon": 0.1,
+        "theta_shuffle_fraction": 0.75,
+        "theta_shuffle_seed_offset": 0,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_shuffled_p100",
+      "descriptors": {
+        "theta_condition": "time_shuffled",
+        "theta_representation": "soft",
+        "theta_soft_epsilon": 0.1,
+        "theta_shuffle_fraction": 1.0,
+        "theta_shuffle_seed_offset": 0,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_neutral",
+      "descriptors": {
+        "theta_condition": "neutral",
+        "theta_representation": "soft",
+        "theta_soft_epsilon": 0.1,
+        "dqi_condition": "neutral"
+      }
+    }
+  ],
+  "gate_conditions": {
+    "oracle": "theta_oracle",
+    "degradation_conditions": [
+      {"name": "theta_shuffled_p25", "fraction": 0.25},
+      {"name": "theta_shuffled_p50", "fraction": 0.50},
+      {"name": "theta_shuffled_p75", "fraction": 0.75},
+      {"name": "theta_shuffled_p100", "fraction": 1.00}
+    ],
+    "neutral": "theta_neutral"
+  },
+  "expected_outputs": [
+    "metrics/e2_p1a_prediction_checkpoint_metrics.csv",
+    "tables/e2_p1a_prediction_summary.csv"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "d0_dqi_label_audit",
+  "slots": 2000,
+  "slot_duration_ms": 1.0,
+  "hidden_lookahead_slots": 100,
+  "num_channels": 10,
+  "num_vehicles": 10,
+  "descriptors": {
+    "skip_causal_dqi": true,
+    "dqi_update_slots": 1,
+    "dqi_history_slots": 100,
+    "dqi_horizon_slots": 100
+  },
+  "dqi": {
+    "packet_size_bits": 32000,
+    "delay_max_ms": 5.0,
+    "delay_beta_ms": 2.0,
+    "vehicle_quantile": 0.10,
+    "time_quantile": 0.10,
+    "quantile_method": "linear",
+    "r_ref_mbps": null,
+    "reference_source": "train_quantile"
+  },
+  "d0_audit": {
+    "history_slots": 100,
+    "horizon_slots": 100,
+    "vehicle_quantile": 0.10,
+    "time_quantile": 0.10,
+    "minimum_label_std": 0.02,
+    "maximum_train_saturation": 0.15,
+    "split_seeds": {
+      "train": [101, 102, 103, 104, 105],
+      "validation": [106, 107],
+      "test": [1, 2, 3]
+    }
+  }
+}

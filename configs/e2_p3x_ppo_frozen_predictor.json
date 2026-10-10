@@ -1,0 +1,5 @@
+{
+  "inherits": "e2_p3_frozen_predictor.json",
+  "agents": ["ppo_discrete"],
+  "validation_type": "diagnostic_central_predictor_cross_backbone_ppo"
+}

@@ -1,0 +1,24 @@
+{
+  "inherits": "e2_p3x_esn_structure_diagnostic.json",
+  "validation_type": "smoke_lstm_ddqn_sac_discrete",
+  "seeds": [1],
+  "agents": ["lstm_ddqn", "sac_discrete"],
+  "agent_settings": {
+    "lstm_ddqn": {
+      "hidden_size": 128,
+      "sequence_length": 32,
+      "burn_in": 8,
+      "learning_rate": 0.001,
+      "warmup": 64
+    },
+    "sac_discrete": {
+      "hidden_dim": 128,
+      "learning_rate": 0.0003,
+      "tau": 0.005,
+      "initial_alpha": 0.2,
+      "target_entropy_scale": 0.98,
+      "update_every": 4,
+      "warmup": 64
+    }
+  }
+}

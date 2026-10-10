@@ -1,0 +1,10 @@
+{
+  "inherits": "e2_d4a_mixed_mode_horizon_with_prediction_formal_seed5.json",
+  "validation_type": "d4a_mixed_mode_horizon_with_prediction_cross_backbone_seed5",
+  "seeds": [301, 302, 303, 304, 305],
+  "agents": ["proposed_esn_ddqn", "dqn", "ddqn_no_esn"],
+  "d4a_mixed_mode_formal": {
+    "stage": "pd09_seed5_cross_backbone_probe",
+    "rationale": "Probe whether the mixed-mode Prediction+DQI safety-throughput compromise is stable across RL backbones before expanding to seed10."
+  }
+}

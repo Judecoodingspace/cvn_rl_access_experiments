@@ -1,0 +1,13 @@
+{
+  "inherits": "e2_single_vt_module_ablation_formal.json",
+  "module_variants": ["full", "no_prediction"],
+  "scenarios": [
+    {"name": "M3_high_pu", "num_channels": 3, "num_vehicles": 1, "traffic": {"family": "fixed_markov", "p01": 0.3, "p10": 0.1, "sensing_pd": 0.9, "sensing_pfa": 0.1}}
+  ],
+  "evaluation_variants": [
+    {"name": "fixed_markov", "traffic": {"family": "fixed_markov", "p01": 0.3, "p10": 0.1, "sensing_pd": 0.9, "sensing_pfa": 0.1}},
+    {"name": "time_varying_markov", "traffic": {"family": "time_varying_markov", "p01": 0.3, "p10": 0.1, "sensing_pd": 0.9, "sensing_pfa": 0.1}},
+    {"name": "bursty_on_off", "traffic": {"family": "bursty_on_off", "sensing_pd": 0.9, "sensing_pfa": 0.1}},
+    {"name": "periodic_with_jitter", "traffic": {"family": "periodic_with_jitter", "sensing_pd": 0.9, "sensing_pfa": 0.1}}
+  ]
+}

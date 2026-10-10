@@ -1,0 +1,106 @@
+{
+  "inherits": "e2_prediction_sensing_redundancy_pilot_a.json",
+  "e2_r1_gate": null,
+  "validation_type": "diagnostic_sensing_precision_gradient",
+  "module_conditions": [
+    {
+      "name": "full",
+      "sensing_info_source": "real",
+      "prediction_info_source": "real",
+      "sensing_mask_source": "neutral",
+      "prediction_mask_source": "neutral",
+      "descriptors": {
+        "theta_condition": "central_frozen_model",
+        "dqi_condition": "neutral",
+        "frozen_model_path": "models/attention_lstm_bs_occupancy_h1.pt",
+        "prediction_input_source": "bs_true_idle_history",
+        "prediction_horizon_slots": 1,
+        "prediction_update_slots": 10,
+        "expected_model_sha256": "c0d645858adf54bdcd04b9c0956629a9b11968a60013ff7d21ec5d8381cb7732"
+      }
+    },
+    {
+      "name": "sensing_only",
+      "sensing_info_source": "real",
+      "prediction_info_source": "neutral",
+      "sensing_mask_source": "neutral",
+      "prediction_mask_source": "neutral",
+      "descriptors": {"theta_condition": "neutral", "dqi_condition": "neutral"}
+    }
+  ],
+  "gate_conditions": {
+    "full": "full",
+    "sensing_only": "sensing_only"
+  },
+  "scenarios": [
+    {
+      "name": "P0_M1_pd_1p0",
+      "num_channels": 1,
+      "num_vehicles": 1,
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 20,
+        "jitter_slots": 5,
+        "sensing_pd": 1.0,
+        "sensing_pfa": 0.1
+      }
+    },
+    {
+      "name": "P0_M1_pd_0p9",
+      "num_channels": 1,
+      "num_vehicles": 1,
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 20,
+        "jitter_slots": 5,
+        "sensing_pd": 0.9,
+        "sensing_pfa": 0.1
+      }
+    },
+    {
+      "name": "P0_M1_pd_0p7",
+      "num_channels": 1,
+      "num_vehicles": 1,
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 20,
+        "jitter_slots": 5,
+        "sensing_pd": 0.7,
+        "sensing_pfa": 0.1
+      }
+    },
+    {
+      "name": "P0_M1_pd_0p5",
+      "num_channels": 1,
+      "num_vehicles": 1,
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 20,
+        "jitter_slots": 5,
+        "sensing_pd": 0.5,
+        "sensing_pfa": 0.1
+      }
+    },
+    {
+      "name": "P0_M1_pd_0p3",
+      "num_channels": 1,
+      "num_vehicles": 1,
+      "traffic": {
+        "family": "periodic_with_jitter",
+        "period_slots": 50,
+        "busy_slots": 20,
+        "jitter_slots": 5,
+        "sensing_pd": 0.3,
+        "sensing_pfa": 0.1
+      }
+    }
+  ],
+  "expected_outputs": [
+    "metrics/diagnostic3_checkpoint_metrics.csv",
+    "tables/diagnostic3_summary.csv"
+  ]
+}

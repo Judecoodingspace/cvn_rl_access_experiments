@@ -1,0 +1,25 @@
+{
+  "inherits": "base.json",
+  "experiment": "scale_and_traffic_sensitivity",
+  "agents": ["proposed_esn_ddqn", "ddqn_no_esn", "ppo_discrete", "fixed_overlay", "fixed_underlay"],
+  "scenarios": [
+    {"name": "paper_scarce", "num_channels": 3, "num_vehicles": 5},
+    {"name": "paper_abundant", "num_channels": 5, "num_vehicles": 3},
+    {"name": "medium_dense", "num_channels": 10, "num_vehicles": 20},
+    {"name": "large_dense", "num_channels": 20, "num_vehicles": 50}
+  ],
+  "traffic_families": [
+    {"family": "fixed_markov", "p01": 0.1, "p10": 0.3},
+    {"family": "fixed_markov", "p01": 0.3, "p10": 0.1},
+    {"family": "fixed_markov", "p01": 0.5, "p10": 0.1},
+    {"family": "time_varying_markov", "blocks": 5, "p01_range": [0.05, 0.5], "p10_range": [0.05, 0.5]},
+    {"family": "bursty_on_off", "idle_mean_slots": 20, "busy_mean_slots": 15},
+    {"family": "periodic_with_jitter", "period_slots": 50, "busy_slots": 20, "jitter_slots": 5},
+    {"family": "mixed_by_channel"}
+  ],
+  "expected_outputs": [
+    "metrics/scale_traffic_metrics.csv",
+    "tables/scale_traffic_summary.csv",
+    "figures/scale_traffic_plr_ieee.pdf"
+  ]
+}

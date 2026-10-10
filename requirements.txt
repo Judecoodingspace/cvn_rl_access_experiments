@@ -1,0 +1,3 @@
+# Run from the repository root. Direct dependencies live in pyproject.toml.
+# Install requirements-cpu.txt or requirements-cuda.txt first to select Torch.
+-e .[dev,backbones]

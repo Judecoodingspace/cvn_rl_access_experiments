@@ -1,0 +1,47 @@
+{
+  "inherits": "e2_p0_prediction_positive_control_r2.json",
+  "e2_r1_gate": "prediction_causal_teacher",
+  "validation_type": "diagnostic_privileged_causal_teacher",
+  "module_conditions": [
+    {
+      "name": "theta_causal",
+      "descriptors": {
+        "theta_condition": "predicted",
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_causal_placebo_a",
+      "descriptors": {
+        "theta_condition": "causal_time_shuffled",
+        "theta_shuffle_seed_offset": 0,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_causal_placebo_b",
+      "descriptors": {
+        "theta_condition": "causal_time_shuffled",
+        "theta_shuffle_seed_offset": 1000003,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_neutral",
+      "descriptors": {
+        "theta_condition": "neutral",
+        "dqi_condition": "neutral"
+      }
+    }
+  ],
+  "gate_conditions": {
+    "causal": "theta_causal",
+    "primary_placebo": "theta_causal_placebo_a",
+    "replicate_placebo": "theta_causal_placebo_b",
+    "neutral": "theta_neutral"
+  },
+  "expected_outputs": [
+    "metrics/e2_p2a_prediction_checkpoint_metrics.csv",
+    "tables/e2_p2a_prediction_summary.csv"
+  ]
+}

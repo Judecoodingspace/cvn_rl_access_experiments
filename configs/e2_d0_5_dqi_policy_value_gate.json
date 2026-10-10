@@ -1,0 +1,50 @@
+{
+  "inherits": "e2_d0_dqi_label_audit.json",
+  "experiment": "d0_5_dqi_policy_value_gate",
+  "slots": 20000,
+  "hidden_lookahead_slots": 100,
+  "num_channels": 10,
+  "num_vehicles": 10,
+  "channel": {
+    "quality_family": "smooth_semi_markov",
+    "fixed_bandwidth_mhz": 10.0,
+    "semi_markov_state_snr_db": [-6.0, 0.0, 8.0],
+    "semi_markov_bad_dwell_slots": [60, 100],
+    "semi_markov_medium_good_dwell_slots": [120, 200],
+    "semi_markov_transition_slots": 30,
+    "shadowing_ar_coefficient": 0.995,
+    "shadowing_stationary_std_db": 2.0,
+    "fast_fading_std_db": 1.0,
+    "noise_floor_dbm": -95.0
+  },
+  "d0_5_audit": {
+    "history_slots": 100,
+    "horizon_slots": 100,
+    "placebo_block_slots": 100,
+    "bootstrap_samples": 10000,
+    "split_seeds": {
+      "train": [101, 102, 103, 104, 105],
+      "validation": [106, 107],
+      "test": [1, 2, 3]
+    },
+    "switching_conditions": {
+      "C0": {"blackout_slots": 0, "min_dwell_slots": 0},
+      "C1": {"blackout_slots": 5, "min_dwell_slots": 50},
+      "C2": {"blackout_slots": 10, "min_dwell_slots": 100}
+    },
+    "primary_condition": "C1",
+    "readiness": {
+      "minimum_delay_violation_fraction": 0.05,
+      "maximum_delay_violation_fraction": 0.20,
+      "minimum_distinct_top1_channels": 3,
+      "maximum_top1_channel_share": 0.80,
+      "maximum_oracle_current_top1_match": 0.90,
+      "minimum_label_std": 0.02,
+      "maximum_train_saturation": 0.15
+    },
+    "acceptance": {
+      "minimum_primary_relative_gain": 0.02,
+      "minimum_sensitivity_seed_wins": 2
+    }
+  }
+}

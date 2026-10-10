@@ -1,0 +1,46 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_baseline_comparison",
+  "seeds": [1, 2, 3],
+  "slots": 15000,
+  "quick_slots": 500,
+  "checkpoint_evaluation": {
+    "checkpoint_interval": 500,
+    "eval_episodes": 5,
+    "eval_slots": 1000
+  },
+  "descriptors": {
+    "source": "generated",
+    "require_frozen_models": false,
+    "persist_generated_bundles": true
+  },
+  "pilot_gate": {
+    "enabled": true,
+    "access_ratio_range": [0.05, 0.95],
+    "scarce_contention_loss_max": 0.70,
+    "light_queue_fraction_max": 0.95
+  },
+  "agents": [
+    "proposed_esn_ddqn",
+    "ddqn_no_esn",
+    "dqn",
+    "ppo_discrete",
+    "tabular_q_learning",
+    "fixed_overlay",
+    "fixed_underlay"
+  ],
+  "scenarios": [
+    {"name": "controlled_abundant", "num_channels": 10, "num_vehicles": 5},
+    {"name": "controlled_balanced", "num_channels": 10, "num_vehicles": 10},
+    {"name": "controlled_scarce", "num_channels": 10, "num_vehicles": 20}
+  ],
+  "expected_outputs": [
+    "metrics/checkpoint_metrics.csv",
+    "tables/checkpoint_summary.csv",
+    "figures/reward_checkpoint_convergence.pdf",
+    "figures/vt_throughput_checkpoint_convergence.pdf",
+    "figures/safety_throughput_pareto.pdf",
+    "figures/performance_vs_load.pdf",
+    "figures/plr_decomposition.pdf"
+  ]
+}

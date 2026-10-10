@@ -1,0 +1,39 @@
+{
+  "inherits": "e2_prediction_sensing_redundancy_pilot_a.json",
+  "e2_r1_gate": null,
+  "validation_type": "diagnostic_prediction_update_slots_1",
+  "module_conditions": [
+    {
+      "name": "full",
+      "sensing_info_source": "real",
+      "prediction_info_source": "real",
+      "sensing_mask_source": "neutral",
+      "prediction_mask_source": "neutral",
+      "descriptors": {
+        "theta_condition": "central_frozen_model",
+        "dqi_condition": "neutral",
+        "frozen_model_path": "models/attention_lstm_bs_occupancy_h1.pt",
+        "prediction_input_source": "bs_true_idle_history",
+        "prediction_horizon_slots": 1,
+        "prediction_update_slots": 1,
+        "expected_model_sha256": "c0d645858adf54bdcd04b9c0956629a9b11968a60013ff7d21ec5d8381cb7732"
+      }
+    },
+    {
+      "name": "sensing_only",
+      "sensing_info_source": "real",
+      "prediction_info_source": "neutral",
+      "sensing_mask_source": "neutral",
+      "prediction_mask_source": "neutral",
+      "descriptors": {"theta_condition": "neutral", "dqi_condition": "neutral"}
+    }
+  ],
+  "gate_conditions": {
+    "full": "full",
+    "sensing_only": "sensing_only"
+  },
+  "expected_outputs": [
+    "metrics/diagnostic2_checkpoint_metrics.csv",
+    "tables/diagnostic2_summary.csv"
+  ]
+}

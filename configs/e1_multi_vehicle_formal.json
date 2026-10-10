@@ -1,0 +1,21 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_baseline_comparison",
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "agents": [
+    "proposed_esn_ddqn",
+    "ddqn_no_esn",
+    "dqn",
+    "ppo_discrete",
+    "tabular_q_learning",
+    "fixed_overlay",
+    "fixed_underlay"
+  ],
+  "scenarios": [
+    {"name": "continuity_scarce", "num_channels": 3, "num_vehicles": 5},
+    {"name": "continuity_abundant", "num_channels": 5, "num_vehicles": 3},
+    {"name": "controlled_abundant", "num_channels": 10, "num_vehicles": 5},
+    {"name": "controlled_balanced", "num_channels": 10, "num_vehicles": 10},
+    {"name": "controlled_scarce", "num_channels": 10, "num_vehicles": 20}
+  ]
+}

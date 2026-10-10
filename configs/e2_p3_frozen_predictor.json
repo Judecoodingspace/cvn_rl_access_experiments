@@ -1,0 +1,66 @@
+{
+  "inherits": "e2_p0_prediction_positive_control_r2.json",
+  "e2_r1_gate": "prediction_frozen_predictor",
+  "validation_type": "diagnostic_privileged_frozen_predictor",
+  "module_conditions": [
+    {
+      "name": "theta_oracle",
+      "descriptors": {
+        "theta_condition": "oracle",
+        "theta_representation": "soft",
+        "theta_soft_epsilon": 0.1,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_central_markov",
+      "descriptors": {
+        "theta_condition": "predicted",
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_central_frozen",
+      "descriptors": {
+        "theta_condition": "central_frozen_model",
+        "frozen_model_path": "models/attention_lstm_bs_occupancy_h1.pt",
+        "prediction_input_source": "bs_true_idle_history",
+        "prediction_horizon_slots": 1,
+        "prediction_update_slots": 1,
+        "expected_model_sha256": "c0d645858adf54bdcd04b9c0956629a9b11968a60013ff7d21ec5d8381cb7732",
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_central_frozen_placebo",
+      "descriptors": {
+        "theta_condition": "central_frozen_time_shuffled",
+        "frozen_model_path": "models/attention_lstm_bs_occupancy_h1.pt",
+        "prediction_input_source": "bs_true_idle_history",
+        "prediction_horizon_slots": 1,
+        "prediction_update_slots": 1,
+        "expected_model_sha256": "c0d645858adf54bdcd04b9c0956629a9b11968a60013ff7d21ec5d8381cb7732",
+        "theta_shuffle_seed_offset": 0,
+        "dqi_condition": "neutral"
+      }
+    },
+    {
+      "name": "theta_neutral",
+      "descriptors": {
+        "theta_condition": "neutral",
+        "dqi_condition": "neutral"
+      }
+    }
+  ],
+  "gate_conditions": {
+    "oracle": "theta_oracle",
+    "causal": "theta_central_markov",
+    "frozen": "theta_central_frozen",
+    "frozen_placebo": "theta_central_frozen_placebo",
+    "neutral": "theta_neutral"
+  },
+  "expected_outputs": [
+    "metrics/e2_p3_prediction_checkpoint_metrics.csv",
+    "tables/e2_p3_prediction_summary.csv"
+  ]
+}

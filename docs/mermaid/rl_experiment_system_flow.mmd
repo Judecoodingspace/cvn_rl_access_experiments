@@ -1,0 +1,21 @@
+flowchart TD
+    A[读取修订后的 main.tex 建模] --> B[冻结实验配置]
+    B --> C[生成或加载 CVN 轨迹]
+    C --> D[DQI 模块输出 fresh DQI 和 age]
+    C --> E[Prediction 模块输出 theta 空闲概率]
+    C --> F[Sensing 与可选 occupancy-type 描述符]
+    D --> G[RL 状态构建器]
+    E --> G
+    F --> G
+    G --> H[离散信道-模式动作]
+    H --> I{模式}
+    I -->|Overlay| J[Overlay reward: DQI 加权吞吐量减碰撞惩罚]
+    I -->|Underlay| K[BS power cap 加 sigmoid 门控 PU 保护奖励]
+    J --> L[经验缓冲区与策略更新]
+    K --> L
+    L --> M[指标: PLR, VT TP, PU TP, PU violation, DQI, convergence]
+    M --> N[CSV 表格和 JSON manifest]
+    M --> O[IEEE 图]
+    N --> P[运行分析笔记]
+    O --> P
+    P --> Q[审稿意见回应表和 manuscript 修订证据]

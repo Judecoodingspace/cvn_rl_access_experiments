@@ -1,0 +1,42 @@
+name: Reproducibility
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cpu-check:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    env:
+      MPLBACKEND: Agg
+      CVN_RL_DEVICE: cpu
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+            requirements*.txt
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -r requirements-cpu.txt
+      - run: python -m pip install -r requirements.txt
+      - run: python -m pip check
+      - run: python scripts/reproduce.py check --device cpu
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-${{ matrix.os }}
+          path: results/reproducibility/
+          if-no-files-found: ignore

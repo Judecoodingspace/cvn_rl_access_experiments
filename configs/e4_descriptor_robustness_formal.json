@@ -1,0 +1,37 @@
+{
+  "inherits": "base_multi_vehicle.json",
+  "experiment": "multi_vehicle_descriptor_sensitivity",
+  "seeds": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "slots": 30000,
+  "agents": ["proposed_esn_ddqn", "ddqn_no_esn"],
+  "descriptors": {
+    "source": "artifact",
+    "require_frozen_models": true,
+    "bundle_path_template": "data/descriptor_bundles/transformer_attention_lstm/{scenario}/{split}/seed_{seed}"
+  },
+  "descriptor_variants": [
+    {"name": "predicted_baseline"},
+    {"name": "prediction_pfa_0.1", "descriptors": {"controlled_prediction_pfa": 0.1}},
+    {"name": "prediction_pfa_0.2", "descriptors": {"controlled_prediction_pfa": 0.2}},
+    {"name": "prediction_pfa_0.3", "descriptors": {"controlled_prediction_pfa": 0.3}},
+    {"name": "prediction_pmd_0.1", "descriptors": {"controlled_prediction_pmd": 0.1}},
+    {"name": "prediction_pmd_0.2", "descriptors": {"controlled_prediction_pmd": 0.2}},
+    {"name": "prediction_pmd_0.3", "descriptors": {"controlled_prediction_pmd": 0.3}},
+    {"name": "dqi_update_100ms", "descriptors": {"resample_dqi_update_slots": 100}},
+    {"name": "dqi_update_500ms", "descriptors": {"resample_dqi_update_slots": 500}},
+    {"name": "dqi_update_1000ms", "descriptors": {"resample_dqi_update_slots": 1000}},
+    {"name": "dqi_update_5000ms", "descriptors": {"resample_dqi_update_slots": 5000}},
+    {"name": "oracle_diagnostic", "descriptors": {"diagnostic_mode": "oracle"}},
+    {"name": "no_module_diagnostic", "module_variant": "sensing_only", "descriptors": {"diagnostic_mode": "no_module"}}
+  ],
+  "scenarios": [
+    {"name": "controlled_abundant", "num_channels": 10, "num_vehicles": 5},
+    {"name": "controlled_scarce", "num_channels": 10, "num_vehicles": 20}
+  ],
+  "expected_outputs": [
+    "metrics/descriptor_robustness_metrics.csv",
+    "tables/descriptor_robustness_summary.csv",
+    "figures/error_staleness_curves.pdf",
+    "figures/oracle_predicted_no_module.pdf"
+  ]
+}
