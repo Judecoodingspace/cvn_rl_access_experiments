@@ -2,6 +2,8 @@
 
 > 本文件描述实验运行器的基础机制。安装、检出验证及冻结模型准备步骤见 [reproducibility.md](reproducibility.md)。
 
+新增物理trace、PU增益估计误差与持出分布场景的公共接口见[shared_revision_infra.md](shared_revision_infra.md)。公共物理校验与各实验contract分离；不同意见可复用trace/估计信息/manifest，训练方式和参数矩阵分别固定。
+
 ## 流程
 
 1. 加载一个 JSON 配置，并将其冻结到运行目录中。

@@ -54,7 +54,7 @@ def summarize(p):
     (tables/'performance_appendix.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
     (tables/'performance_appendix.tex').write_text('\n'.join(tex)+'\n',encoding='utf-8')
     manifest={'protocol_hash':p['protocol_hash'],'tasks':len(expected),'research_evidence':p['entry']['execution_scope']=='formal',
-              'tables':{str(f.relative_to(root)):file_hash(f) for f in tables.iterdir() if f.is_file()}}
+              'tables':{f.relative_to(root).as_posix():file_hash(f) for f in tables.iterdir() if f.is_file()}}
     write_json(root/'analysis_manifest.json',manifest)
     (root/'response_evidence_map.md').write_text('# R5-C2 evidence map\n\n'
       '| Question | Conditions | Evidence |\n|---|---|---|\n'
@@ -78,21 +78,26 @@ def plot(p):
         d=data.loc[ids]; y=d.delta_g_dqi.to_numpy(); ax.errorbar(x,y,yerr=np.vstack([y-d.low95,d.high95-y]),marker='o',capsize=3,label=label)
     curve(axes[0,0],['C01','C00','C02'],[.05,.1,.2],'vehicle quantile')
     curve(axes[0,0],['C03','C00','C04'],[.05,.1,.2],'time quantile'); axes[0,0].set_xlabel('Lower-tail quantile')
+    axes[0,0].set_xticks([.05,.1,.2])
     curve(axes[0,1],['C05','C00','C06'],[50,100,200],'main: 10 ms'); axes[0,1].set_xlabel('Future horizon (ms)')
+    axes[0,1].set_xticks([50,100,200])
     curve(axes[1,0],['C07','C00','C08'],[2.5,5,10],'main: 10 ms'); axes[1,0].set_xlabel('Label delay threshold (ms)')
+    axes[1,0].set_xticks([2.5,5,10])
     curve(axes[1,1],['C11','C00','C12','C13'],np.arange(4)-.06,'main: 10 ms')
-    curve(axes[1,1],['C15','C14','C16','C17'],np.arange(4)+.06,'stress'); axes[1,1].set_xticks(range(4),['0.5','1','2','off']); axes[1,1].set_xlabel('Validity scale / discount disabled')
+    stress=read_json(root/'pilot/freshness_selection.json')['selected_update_slots']
+    curve(axes[1,1],['C15','C14','C16','C17'],np.arange(4)+.06,f'stress: {stress} ms'); axes[1,1].set_xticks(range(4),['0.5','1','2','off']); axes[1,1].set_xlabel('Validity scale / discount disabled')
     for i,ax in enumerate(axes.flat): ax.axhline(0,color='grey',lw=.8); ax.set_ylabel('DQI goodput gain (Mbps)'); ax.grid(alpha=.2); ax.legend(fontsize=8); ax.set_title(f'({chr(97+i)})')
     if not manifest['research_evidence']: fig.suptitle('SMOKE CHECK ONLY - NOT RESEARCH EVIDENCE',color='red')
     fig.tight_layout(); out=root/'figures'; out.mkdir(parents=True,exist_ok=True)
     for ext in ['pdf','png']: fig.savefig(out/f'dqi_sensitivity_v2.{ext}',dpi=220,bbox_inches='tight')
     plt.close(fig)
     shape=data.loc[['C14','C17','C18']]; fig,ax=plt.subplots(figsize=(6,4)); y=shape.delta_g_dqi.to_numpy()
+    if not manifest['research_evidence']: fig.suptitle('SMOKE CHECK ONLY - NOT RESEARCH EVIDENCE',color='red',fontsize=11)
     ax.bar(['Exponential','Discount off','Endpoint-matched linear'],y,yerr=np.vstack([y-shape.low95,shape.high95-y]),capsize=4)
     ax.axhline(0,color='grey'); ax.set_ylabel('DQI goodput gain (Mbps)'); fig.tight_layout()
     for ext in ['pdf','png']: fig.savefig(out/f'decay_shape_v2.{ext}',dpi=220,bbox_inches='tight')
     plt.close(fig)
-    manifest['figures']={str(f.relative_to(root)):file_hash(f) for f in out.iterdir() if f.is_file()}; write_json(root/'analysis_manifest.json',manifest)
+    manifest['figures']={f.relative_to(root).as_posix():file_hash(f) for f in out.iterdir() if f.is_file()}; write_json(root/'analysis_manifest.json',manifest)
     (out/'caption.md').write_text('N=10, M=10 competitive mixed-mode; same ESN-DDQN recipe with independently trained policies. '
      'Main DQI updates10ms, stress updates selected by age coverage; rho is received Doppler coherence. '
      'Five paired training seeds; 95% paired bootstrap intervals. Gains relative to matched Prediction-only. '

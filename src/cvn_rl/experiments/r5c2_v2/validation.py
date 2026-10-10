@@ -24,7 +24,7 @@ def validate(p):
     cutoff=300; before=raw_features(b)[:cutoff+1].copy(); a['rate_mbps'][cutoff+1:]*=2
     np.testing.assert_array_equal(before,raw_features(b)[:cutoff+1]); checks.append('future rate not an input feature')
     check_protected()
-    files=['tests/test_r5c2_v2_physics.py','tests/test_r5c2_v2_pipeline.py','tests/test_dqi_labels.py','tests/test_d3_attention_dqi_predictor.py',
+    files=['tests/test_revision_physics.py','tests/test_r5c2_v2_physics.py','tests/test_r5c2_v2_pipeline.py','tests/test_dqi_labels.py','tests/test_d3_attention_dqi_predictor.py',
            'tests/test_multi_vehicle.py','tests/test_statistics.py','tests/test_config.py','tests/test_cli_dry_run.py']
     args=[sys.executable,'-m','pytest','-p','no:cacheprovider',*files,'--basetemp=tmp/pytest/r5c2_v2_gate']
     run=subprocess.run(args,cwd=ROOT,capture_output=True,text=True)

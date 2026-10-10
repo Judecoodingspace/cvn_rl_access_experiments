@@ -48,8 +48,37 @@ def conditions():
 def target_spec(c):
     return {k:c[k] for k in ['target_id','qv','qt','horizon_ms','delay_ms']}
 
+def protection_snapshot_path():
+    folder=ROOT/'revision_round2/review_comments/action_plans/r5c2'
+    pointer=folder/'r5c2_v2_protection_current.json'
+    if pointer.exists():
+        state=read_json(pointer)
+        if not state.get('workspace_confirmed_stable'): raise ValueError('workspace stability not acknowledged')
+        path=project_path(state['snapshot']).resolve()
+        if not path.is_relative_to(folder): raise ValueError('invalid protection snapshot')
+        if not path.is_file(): raise ValueError('acknowledged author snapshot is missing; preserve the audit')
+        return path
+    return folder/'r5c2_v2_protected_sources.json'
+
+def acknowledge_workspace(stable=False):
+    """Explicit user-operated checkpoint after concurrent work finishes; never freezes science."""
+    if not stable: raise ValueError('only after the author confirms other workspace work has finished: --workspace-stable')
+    from datetime import datetime,timezone
+    folder=ROOT/'revision_round2/review_comments/action_plans/r5c2'; original=read_json(folder/'r5c2_v2_protected_sources.json')
+    current={n:file_hash(ROOT/n) for n in original['files']}
+    name=f'r5c2_v2_protected_sources_stable_{datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")}.json'
+    snapshot={'created':datetime.now(timezone.utc).isoformat(),'scope':'author-acknowledged stable workspace after concurrent task',
+              'files':current,'original_snapshot_preserved':True,'differences_from_initial':[n for n,h in original['files'].items() if current[n]!=h]}
+    write_json(folder/name,snapshot)
+    write_json(folder/'r5c2_v2_protection_current.json',{'snapshot':(folder/name).relative_to(ROOT).as_posix(),'workspace_confirmed_stable':True,
+                 'purpose':'protect current dependency files; does not modify or re-sign historical experiment freezes'})
+    return {'snapshot':name,'differences':snapshot['differences_from_initial'],'scientific_protocol_frozen':False}
+
 def check_protected():
-    p=ROOT/'revision_round2/review_comments/action_plans/r5c2/r5c2_v2_protected_sources.json'
+    p=protection_snapshot_path()
+    if not p.exists():
+        return {'protected_files':0,'changed':[],'snapshot_sha256':None,'mode':'repository_only_no_author_snapshot',
+                'note':'No author-workspace preservation claim; protocol still hashes its source dependencies.'}
     snapshot=read_json(p)
     changed=[n for n,h in snapshot['files'].items() if not (ROOT/n).is_file() or file_hash(ROOT/n)!=h]
     if changed: raise RuntimeError(f'protected workspace files changed: {changed}')
@@ -79,15 +108,22 @@ def resolve(path):
         raise ValueError('short budgets require smoke scope')
     physical=validate(entry['physics'])
     check_protected()
-    protected=read_json(ROOT/'revision_round2/review_comments/action_plans/r5c2/r5c2_v2_protected_sources.json')
+    protected=read_json(protection_snapshot_path()) if protection_snapshot_path().exists() else {'files':{}}
     code={str(p.relative_to(ROOT)).replace('\\','/'):file_hash(p) for p in (ROOT/'src/cvn_rl/experiments/r5c2_v2').glob('*.py')}
     for p in [ROOT/'scripts/r5c2_dqi_sensitivity_v2.py',ROOT/'scripts/analyze_r5c2_dqi_sensitivity_v2.py']:
         if p.exists(): code[str(p.relative_to(ROOT)).replace('\\','/')]=file_hash(p)
     code.update(protected['files'])
     for rel in ['src/cvn_rl/predictors/attention_lstm.py','src/cvn_rl/simulation/actions.py',
                 'src/cvn_rl/simulation/traffic.py','src/cvn_rl/experiments/config.py',
-                'src/cvn_rl/simulation/state_builder.py']:
+                'src/cvn_rl/simulation/state_builder.py','src/cvn_rl/agents/shared_multi.py',
+                'src/cvn_rl/agents/torch_agents.py','src/cvn_rl/agents/fixed.py',
+                'src/cvn_rl/simulation/multi_traces.py','src/cvn_rl/simulation/multi_env.py',
+                'src/cvn_rl/simulation/rate_model.py','src/cvn_rl/simulation/dqi_labels.py',
+                'src/cvn_rl/predictors/frozen_predictor.py','src/cvn_rl/experiments/r5c2_execution.py',
+                'src/cvn_rl/experiments/r5c2_protocol.py','src/cvn_rl/experiments/r5c2_data.py']:
         code[rel]=file_hash(ROOT/rel)
+    for p in (ROOT/'src/cvn_rl/simulation').glob('revision_*.py'):
+        code[p.relative_to(ROOT).as_posix()]=file_hash(p)
     c=conditions()
     value=dict(entry=entry,physical_manifest=physical,conditions=c,targets=[target_spec(x) for x in c[:11]],source_hashes=code)
     value['protocol_hash']=digest(value)

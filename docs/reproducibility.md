@@ -84,7 +84,9 @@ python scripts/r5c2_dqi_sensitivity.py verify --config configs/r5c2_local.json
 
 ## 6. 外部数据包与正式模式
 
-新增 R5-C2 v2 代码亦保留在仓库中，但 `resolve` 依赖作者工作区的 `r5c2_v2_protected_sources.json`，以及其中列出的旧模型/结果快照。它不是首次检出即可完整启动的公共入口。公开检出的测试仍执行 v2 物理、因果性和模型测试，只跳过“作者旧工作区文件未改变”这一项本地审计；正式运行器的保护检查没有关闭。
+R5-C2 v2与[公共物理/场景接口](shared_revision_infra.md)保留在仓库中。公开检出没有作者私有保护快照时，`resolve`采用repository-only模式并记录所有执行依赖hash；存在本地快照时仍强制检查，已声明的快照丢失会失败。缺少作者工作区的测试只跳过本地历史文件审计，不跳过物理、因果性或模型检查。
+
+v2仍需准备配置中指定的冻结占用预测器及其metadata/hash。`resolve`和公共物理生成不要求拷贝历史13GB标签/旧论文结果；完整模型/RL阶段依赖真实权重和各gate。重新训练占用模型应使用独立配置填写新路径/hash，保留历史配置。公共物理接口可生成其他误差/OOD场景，但对应的冻结策略评估runner、实验矩阵和统计须单独建立，见共享接口说明。
 
 artifact descriptor 配置需要按 loader schema 提供：
 

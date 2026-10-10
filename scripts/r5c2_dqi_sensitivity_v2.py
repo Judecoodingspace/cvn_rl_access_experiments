@@ -7,12 +7,16 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
 from cvn_rl.experiments.r5c2_v2.protocol import resolve,save_resolution,bundle_root,read_json,write_json,check_protected,file_hash,project_path
 
 def main():
-    parser=argparse.ArgumentParser(); parser.add_argument('command',choices=['resolve','check-physics','validate','prepare-data','pilot-freshness','train-predictors','pilot-runtime','freeze','run-rl','summarize','plot','verify','_task'])
+    parser=argparse.ArgumentParser(); parser.add_argument('command',choices=['acknowledge-workspace','resolve','check-physics','validate','prepare-data','pilot-freshness','train-predictors','pilot-runtime','freeze','run-rl','summarize','plot','verify','_task'])
     parser.add_argument('--config',default='configs/r2_r05c02_dqi_sensitivity_v2.json'); parser.add_argument('--protocol')
     parser.add_argument('--stage',choices=['pilot','formal'],default='formal'); parser.add_argument('--targets'); parser.add_argument('--conditions'); parser.add_argument('--seeds')
     parser.add_argument('--resume',action='store_true'); parser.add_argument('--skip-full-probe',action='store_true'); parser.add_argument('--full-probe',action='store_true')
     parser.add_argument('--phase',choices=['protocol','runs'],default='protocol'); parser.add_argument('--condition'); parser.add_argument('--seed',type=int)
+    parser.add_argument('--workspace-stable',action='store_true')
     a=parser.parse_args()
+    if a.command=='acknowledge-workspace':
+        from cvn_rl.experiments.r5c2_v2.protocol import acknowledge_workspace
+        print(json.dumps(acknowledge_workspace(a.workspace_stable),ensure_ascii=False,indent=2)); return
     if a.command=='_task':
         p=read_json(a.protocol); check_protected()
         if any(file_hash(project_path(n))!=h for n,h in p['source_hashes'].items()): raise ValueError('task code differs from resolved protocol')

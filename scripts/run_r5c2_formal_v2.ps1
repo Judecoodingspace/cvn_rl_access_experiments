@@ -8,9 +8,9 @@ function Invoke-V2([string[]]$Arguments) {
     & $TaskPython $TaskCli @Arguments --config $Config
     if ($LASTEXITCODE -ne 0) { throw "v2 stage failed: $Arguments" }
 }
-Invoke-V2 @('train-predictors','--stage','formal','--resume')
-Invoke-V2 @('freeze','--phase','runs')
-Invoke-V2 @('run-rl','--stage','formal','--resume')
-Invoke-V2 @('summarize')
-Invoke-V2 @('plot')
-Invoke-V2 @('verify')
+Invoke-V2 -Arguments @('train-predictors','--stage','formal','--resume')
+Invoke-V2 -Arguments @('freeze','--phase','runs')
+Invoke-V2 -Arguments @('run-rl','--stage','formal','--resume')
+Invoke-V2 -Arguments @('summarize')
+Invoke-V2 -Arguments @('plot')
+Invoke-V2 -Arguments @('verify')

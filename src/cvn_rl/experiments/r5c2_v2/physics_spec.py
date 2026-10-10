@@ -1,5 +1,6 @@
 """Explicit physical constants; supplemental choices are not attributed to 3GPP."""
 import numpy as np
+from cvn_rl.simulation.revision_physics_spec import validate_physics
 
 REQUIRED={'spec_version','standard_url','pathloss','carrier_hz','bs_position_m','vt_height_m','initial_x_range_m','road_y_m',
  'speed_kmh','reference_max_speed_kmh','direction_mode','pu_receiver_x_range_m','pu_receiver_y_m','pu_receiver_height_m',
@@ -9,6 +10,7 @@ REQUIRED={'spec_version','standard_url','pathloss','carrier_hz','bs_position_m',
  'position_error_std_m','estimated_gain_bias_db','additional_report_delay_slots'}
 
 def validate(s):
+    common=validate_physics(s)
     if set(s)!=REQUIRED: raise ValueError(f'physical fields missing/unknown: {REQUIRED-set(s)}, {set(s)-REQUIRED}')
     if s['pathloss']!='UMi_LOS_Table7.4.1-1' or '18.1.0' not in s['spec_version']: raise ValueError('adopted UMi LOS Release18 source required')
     if s['bs_position_m'][2]!=10 or s['pu_receiver_height_m']!=10 or not 1.5<=s['vt_height_m']<=22.5: raise ValueError('UMi antenna heights')
@@ -22,7 +24,7 @@ def validate(s):
     if s['position_error_std_m']<0 or s['additional_report_delay_slots']<0: raise ValueError('error/delay nonnegative')
     paper=['carrier_hz','rician_k_db','shadow_sigma_db','cam_update_slots']
     standard=['spec_version','standard_url','pathloss','bs_position_m','vt_height_m','pu_receiver_height_m']
-    return {'values':s,'provenance':{k:('paper' if k in paper else '3GPP pathloss/domain with supplemental geometry' if k in standard else 'explicit supplemental v2 assumption') for k in s},
+    return {'values':s,'common_physical_manifest':common,'provenance':{k:('paper' if k in paper else '3GPP pathloss/domain with supplemental geometry' if k in standard else 'explicit supplemental v2 assumption') for k in s},
             'standard_table':'7.4.1-1 / UMi LOS, environment height1m',
             'fading_note':'simplified Rician marginal; AR1 coefficient J0 at one-slot radial Doppler lag, not full Jakes covariance or 3GPP cluster simulation',
             'shadow_note':'Gaussian dB process with exponential distance correlation; 10m correlation is supplemental',
